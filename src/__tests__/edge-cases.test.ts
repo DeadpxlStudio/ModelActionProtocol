@@ -506,3 +506,168 @@ describe("captureSnapshot", () => {
     expect(s1.hash).toBe(s2.hash);
   });
 });
+
+// ─── rollbackToSafe with a flagged entry ────────────────────────────────────
+
+describe("rollbackToSafe with a problem", () => {
+  it("rolls back to the flagged entry and restores state", async () => {
+    const database: Record<string, { id: string; price: number }> = {
+      acme: { id: "acme", price: 500 },
+    };
+
+    const critic = createRuleCritic([
+      {
+        name: "flag-deletions",
+        check: ({ action }) => {
+          if (action.tool === "dangerousAction") {
+            return { verdict: "FLAGGED", reason: "Dangerous" };
+          }
+          return null;
+        },
+      },
+    ]);
+
+    const map = new MAP({ executor: "test", critic: "test" }, critic);
+    map.registerTool("updatePrice", "update", z.object({ price: z.number() }), async ({ price }) => {
+      database.acme.price = price;
+      return { price };
+    });
+    map.registerTool("dangerousAction", "danger", z.object({}), async () => {
+      database.acme.price = 0;
+      return {};
+    });
+    map.connectState(
+      () => JSON.parse(JSON.stringify(database)),
+      (s) => Object.assign(database, s as any)
+    );
+
+    // Good action
+    await map.execute("test", "updatePrice", { price: 299 });
+    expect(database.acme.price).toBe(299);
+
+    // Bad action (flagged)
+    await map.execute("test", "dangerousAction", {});
+
+    // rollbackToSafe should find the flagged entry and roll back
+    const result = map.rollbackToSafe();
+    expect(result).not.toBeNull();
+    expect(result!.entriesReverted).toBeGreaterThan(0);
+    // State should be restored to before the dangerous action
+    expect(database.acme.price).toBe(299);
+  });
+});
+
+// ─── Custom Risk Classifier with Tiered Critic ─────────────────────────────
+
+describe("custom risk classifier", () => {
+  it("routes to the correct tier based on custom logic", async () => {
+    const tiers: string[] = [];
+
+    const critic = createTieredCritic({
+      low: async () => { tiers.push("low"); return { verdict: "PASS" as const, reason: "ok" }; },
+      medium: async () => { tiers.push("medium"); return { verdict: "PASS" as const, reason: "ok" }; },
+      high: async () => { tiers.push("high"); return { verdict: "PASS" as const, reason: "ok" }; },
+      classify: (action) => {
+        // Custom: any amount > 10000 is high risk
+        if ((action.input as any).amount > 10000) return "high";
+        if (action.tool.startsWith("read")) return "low";
+        return "medium";
+      },
+    });
+
+    await critic({ goal: "test", action: { tool: "readData", input: {}, output: null }, stateBefore: {}, stateAfter: {}, previousActions: [] });
+    await critic({ goal: "test", action: { tool: "transfer", input: { amount: 50000 }, output: null }, stateBefore: {}, stateAfter: {}, previousActions: [] });
+    await critic({ goal: "test", action: { tool: "updateRecord", input: { amount: 100 }, output: null }, stateBefore: {}, stateAfter: {}, previousActions: [] });
+
+    expect(tiers).toEqual(["low", "high", "medium"]);
+  });
+});
+
+// ─── Full Learning Loop Integration ─────────────────────────────────────────
+
+describe("learning loop integration", () => {
+  it("learns from corrections and integrates with tiered critic", async () => {
+    const database: Record<string, { price: number }> = {
+      acme: { price: 500 },
+    };
+
+    // Critic that flags $0 prices
+    const baseCritic = createRuleCritic([{
+      name: "no-zero",
+      check: ({ stateAfter }) => {
+        const s = stateAfter as Record<string, { price: number }>;
+        const bad = Object.values(s).find(c => c.price === 0);
+        if (bad) return { verdict: "CORRECTED", reason: "Price $0", correction: { tool: "fix", input: { price: 299 } } };
+        return null;
+      },
+    }]);
+
+    const map = new MAP({ executor: "test", critic: "test" }, baseCritic);
+    map.registerTool("setPrice", "set", z.object({ price: z.number() }), async ({ price }) => {
+      database.acme.price = price;
+      return { price };
+    });
+    map.registerTool("fix", "fix", z.object({ price: z.number() }), async ({ price }) => {
+      database.acme.price = price;
+      return { price };
+    });
+    map.connectState(
+      () => JSON.parse(JSON.stringify(database)),
+      (s) => Object.assign(database, s as any)
+    );
+
+    // Generate 3 corrections
+    await map.execute("test", "setPrice", { price: 0 });
+    database.acme.price = 500; // reset for next test
+    await map.execute("test", "setPrice", { price: 0 });
+    database.acme.price = 500;
+    await map.execute("test", "setPrice", { price: 0 });
+
+    // Learning engine analyzes the ledger
+    const engine = new LearningEngine();
+    const patterns = engine.analyzePatterns(map.getLedger());
+    expect(patterns.length).toBeGreaterThan(0);
+
+    const proposals = engine.proposeRules(map.getLedger(), 3);
+    expect(proposals.length).toBeGreaterThan(0);
+
+    // Human approves the rule
+    proposals.forEach(r => engine.addProposedRule(r));
+    engine.approveRule(proposals[0].id);
+
+    // Learned rules now work as a critic
+    const learnedCritic = engine.toRuleCritic();
+    const result = await learnedCritic({
+      goal: "test",
+      action: { tool: "setPrice", input: { price: 0 }, output: null },
+      stateBefore: {},
+      stateAfter: {},
+      previousActions: [],
+    });
+    expect(result.verdict).not.toBe("PASS");
+    expect(result.reason).toContain("[learned]");
+
+    // Integrate learned rules as the fast tier in a tiered critic
+    // Use a custom classifier that routes "setPrice" to low tier
+    const tieredCritic = createTieredCritic({
+      low: learnedCritic,
+      medium: baseCritic,
+      high: baseCritic,
+      classify: (action) => {
+        if (action.tool === "setPrice") return "low";
+        return "medium";
+      },
+    });
+
+    // setPrice routed to low tier → learned rules fire (microseconds, no LLM)
+    const tieredResult = await tieredCritic({
+      goal: "test",
+      action: { tool: "setPrice", input: { price: 0 }, output: null },
+      stateBefore: {},
+      stateAfter: {},
+      previousActions: [],
+    });
+    expect(tieredResult.reason).toContain("[low]");
+    expect(tieredResult.reason).toContain("[learned]");
+  });
+});
