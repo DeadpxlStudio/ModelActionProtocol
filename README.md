@@ -6,7 +6,7 @@ MCP gave Claude the hands. MAP gives Claude the receipt.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-10%2F10-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-56%2F56-brightgreen.svg)]()
 
 ---
 

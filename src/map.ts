@@ -211,6 +211,7 @@ export class MAP {
         stateAfter: e.stateAfter,
         parentHash: e.parentHash,
         hash: e.hash,
+        critic: e.critic,
       }))
     );
   }

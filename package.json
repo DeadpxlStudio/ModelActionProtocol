@@ -24,7 +24,7 @@
   "author": "deadpxl <neil@deadpxl.studio>",
   "license": "MIT",
   "dependencies": {
-    "ai": ">=6.0.0"
+    "zod": "^3.0.0 || ^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.5.2",

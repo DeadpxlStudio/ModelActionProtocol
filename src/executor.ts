@@ -90,15 +90,43 @@ export async function executeAction(
   // Emit action start
   ledger.emit({ type: "action:start", tool: toolName, input });
 
+  // 0. ESCALATE check — halt BEFORE execution for irreversible actions
+  if (tool.reversal?.strategy === "ESCALATE") {
+    const stateBefore = getState();
+    const action: ActionRecord = {
+      tool: toolName,
+      input,
+      output: { pending: true, reason: "ESCALATE: awaiting human approval" },
+      reversalStrategy: "ESCALATE",
+    };
+    const entry = ledger.append(action, stateBefore, stateBefore, {
+      verdict: "FLAGGED",
+      reason: `Action "${toolName}" requires human approval (ESCALATE strategy)`,
+    });
+    return { entry, halted: true, corrected: false };
+  }
+
   // 1. Snapshot state before
   const stateBefore = getState();
 
+  // 1b. RESTORE capture — snapshot external state before mutation
+  let capturedState: unknown = undefined;
+  if (tool.reversal?.strategy === "RESTORE" && "capture" in tool && typeof (tool as any).capture === "function") {
+    try {
+      capturedState = await (tool as any).capture(input);
+    } catch {
+      // Capture failed — log but don't block execution
+    }
+  }
+
   // 2. Execute the tool
   let output: unknown;
+  let executionError = false;
   try {
     const parsed = tool.inputSchema.parse(input);
     output = await tool.execute(parsed);
   } catch (error) {
+    executionError = true;
     output = {
       error: true,
       message: error instanceof Error ? error.message : "Unknown error",
@@ -107,6 +135,16 @@ export async function executeAction(
 
   // 3. Snapshot state after
   const stateAfter = getState();
+
+  // 3b. If the tool itself errored, flag it without running the critic
+  if (executionError) {
+    const action: ActionRecord = { tool: toolName, input, output };
+    const entry = ledger.append(action, stateBefore, stateAfter, {
+      verdict: "FLAGGED",
+      reason: `Tool execution failed: ${(output as any).message}`,
+    });
+    return { entry, halted: config.pauseOnFlag ?? true, corrected: false };
+  }
 
   // 4. Run the critic
   const previousActions = ledger

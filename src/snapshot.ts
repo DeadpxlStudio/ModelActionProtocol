@@ -50,7 +50,9 @@ export function captureSnapshot(
 ): { serialized: unknown; hash: string } {
   const serialize = customSerializer ?? serializeState;
   const serialized = JSON.parse(JSON.stringify(state)); // deep clone
-  const hash = sha256(serialize(state));
+  // Hash the clone — same value that gets stored — so re-hashing the
+  // snapshot during verification always matches the recorded hash.
+  const hash = sha256(serialize(serialized));
   return { serialized, hash };
 }
 
@@ -59,17 +61,18 @@ export function captureSnapshot(
  * This chains entries together — changing any prior entry invalidates
  * all subsequent hashes, making the ledger tamper-evident.
  *
- * Uses JSON.stringify of a structured object to avoid delimiter injection.
- * Hash = SHA-256(JSON({ sequence, action, stateBefore, stateAfter, parentHash }))
+ * Includes the critic verdict in the hash so tampered verdicts are detected.
+ * Hash = SHA-256(JSON({ sequence, action, stateBefore, stateAfter, parentHash, critic }))
  */
 export function computeEntryHash(
   sequence: number,
   action: unknown,
   stateBefore: string,
   stateAfter: string,
-  parentHash: string
+  parentHash: string,
+  critic?: unknown
 ): string {
-  const payload = JSON.stringify({ sequence, action, stateBefore, stateAfter, parentHash });
+  const payload = JSON.stringify({ sequence, action, stateBefore, stateAfter, parentHash, critic });
   return sha256(payload);
 }
 
@@ -86,6 +89,7 @@ export function verifyChain(
     stateAfter: string;
     parentHash: string;
     hash: string;
+    critic?: unknown;
   }>
 ): { valid: boolean; corruptedAt?: number } {
   const GENESIS_HASH = "0".repeat(64);
@@ -108,13 +112,14 @@ export function verifyChain(
       return { valid: false, corruptedAt: i };
     }
 
-    // Verify hash integrity
+    // Verify hash integrity (includes critic verdict in hash)
     const expectedHash = computeEntryHash(
       entry.sequence,
       entry.action,
       entry.stateBefore,
       entry.stateAfter,
-      entry.parentHash
+      entry.parentHash,
+      entry.critic
     );
 
     if (entry.hash !== expectedHash) {

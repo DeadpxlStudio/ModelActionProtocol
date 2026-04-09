@@ -671,3 +671,140 @@ describe("learning loop integration", () => {
     expect(tieredResult.reason).toContain("[learned]");
   });
 });
+
+// ─── ESCALATE gates execution ───────────────────────────────────────────────
+
+describe("ESCALATE strategy", () => {
+  it("halts before executing the tool", async () => {
+    let executed = false;
+    const map = new MAP(
+      { executor: "test", critic: "test" },
+      createRuleCritic([])
+    );
+
+    const tool = defineEscalateTool({
+      name: "wireTransfer",
+      description: "Send wire",
+      inputSchema: z.object({ amount: z.number() }),
+      execute: async (input) => {
+        executed = true; // Should NEVER be reached
+        return { transferId: "tr_123" };
+      },
+      approver: "treasury@acme.com",
+    });
+    map.addTool(tool);
+    map.connectState(() => ({}), () => {});
+
+    const result = await map.execute("Send money", "wireTransfer", { amount: 50000 });
+
+    expect(executed).toBe(false); // Tool was NOT executed
+    expect(result.halted).toBe(true);
+    expect(result.entry.critic.verdict).toBe("FLAGGED");
+    expect(result.entry.action.output).toEqual({ pending: true, reason: "ESCALATE: awaiting human approval" });
+  });
+});
+
+// ─── RESTORE capture is called ──────────────────────────────────────────────
+
+describe("RESTORE strategy", () => {
+  it("calls capture before tool execution", async () => {
+    const calls: string[] = [];
+    const map = new MAP(
+      { executor: "test", critic: "test" },
+      createRuleCritic([])
+    );
+
+    const tool = defineRestoreTool({
+      name: "updateRecord",
+      description: "Update a record",
+      inputSchema: z.object({ id: z.string(), value: z.number() }),
+      execute: async (input) => {
+        calls.push("execute");
+        return { updated: true };
+      },
+      capture: async (input) => {
+        calls.push("capture");
+        return { id: input.id, originalValue: 100 };
+      },
+      restore: async (captured) => {
+        calls.push("restore");
+      },
+    });
+    map.addTool(tool);
+    map.connectState(() => ({}), () => {});
+
+    await map.execute("test", "updateRecord", { id: "acme", value: 200 });
+
+    expect(calls).toEqual(["capture", "execute"]);
+  });
+});
+
+// ─── Critic verdict in hash chain ───────────────────────────────────────────
+
+describe("critic verdict in hash chain", () => {
+  it("tampered verdicts are detected by verifyIntegrity", async () => {
+    const state = { value: 1 };
+    const map = new MAP(
+      { executor: "test", critic: "test" },
+      createRuleCritic([])
+    );
+    map.registerTool("inc", "increment", z.object({}), async () => {
+      state.value++;
+      return state.value;
+    });
+    map.connectState(() => ({ ...state }), (s) => Object.assign(state, s as any));
+
+    await map.execute("test", "inc", {});
+
+    // Verify original chain is valid
+    expect(map.verifyIntegrity().valid).toBe(true);
+
+    // Tamper with the verdict
+    const entries = map.getLedger() as LedgerEntry[];
+    const tampered = entries.map(e => ({
+      ...e,
+      critic: { ...e.critic, verdict: "FLAGGED" as const },
+    }));
+
+    // Tampered verdict should fail verification
+    const result = verifyChain(tampered);
+    expect(result.valid).toBe(false);
+  });
+});
+
+// ─── Tool execution errors flag without critic ──────────────────────────────
+
+describe("tool execution errors", () => {
+  it("flags failed tool execution without running critic", async () => {
+    const criticCalled: boolean[] = [];
+    const critic = async () => {
+      criticCalled.push(true);
+      return { verdict: "PASS" as const, reason: "ok" };
+    };
+
+    const map = new MAP({ executor: "test", critic: "test" }, critic);
+    map.registerTool(
+      "failing",
+      "always fails",
+      z.object({}),
+      async () => { throw new Error("tool broke"); }
+    );
+    map.connectState(() => ({}), () => {});
+
+    const result = await map.execute("test", "failing", {});
+
+    expect(result.entry.critic.verdict).toBe("FLAGGED");
+    expect(result.entry.critic.reason).toContain("Tool execution failed");
+    expect(result.halted).toBe(true);
+    expect(criticCalled.length).toBe(0); // Critic was NOT called
+  });
+});
+
+// ─── approveRule throws on missing ID ───────────────────────────────────────
+
+describe("approveRule validation", () => {
+  it("throws when rule ID not found", () => {
+    const engine = new LearningEngine();
+    expect(() => engine.approveRule("nonexistent")).toThrow("not found");
+  });
+});

@@ -83,7 +83,8 @@ export class Ledger {
       action,
       before.hash,
       after.hash,
-      parentHash
+      parentHash,
+      critic
     );
 
     const entry: LedgerEntry = {
@@ -213,7 +214,7 @@ export class Ledger {
    */
   getStats() {
     const committed = this.entries.filter(
-      (e) => e.status === "ACTIVE"
+      (e) => e.status === "ACTIVE" && e.action.tool !== "ROLLBACK"
     ).length;
     const rolledBack = this.entries.filter(
       (e) => e.status === "ROLLED_BACK"
@@ -235,7 +236,9 @@ export class Ledger {
   }
 
   /**
-   * Clear the ledger (for testing/reset only).
+   * Clear the ledger. Intended for testing and session reset only.
+   * WARNING: This destroys the audit trail irreversibly.
+   * @internal
    */
   clear(): void {
     this.entries = [];

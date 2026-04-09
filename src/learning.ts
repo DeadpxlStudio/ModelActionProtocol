@@ -174,10 +174,11 @@ export class LearningEngine {
    */
   approveRule(ruleId: string): void {
     const rule = this.rules.find((r) => r.id === ruleId);
-    if (rule) {
-      rule.approved = true;
-      rule.approvedAt = new Date().toISOString();
+    if (!rule) {
+      throw new Error(`Rule "${ruleId}" not found. Add it with addProposedRule() first.`);
     }
+    rule.approved = true;
+    rule.approvedAt = new Date().toISOString();
   }
 
   /**
