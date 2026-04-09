@@ -53,18 +53,26 @@ Uses tiered model routing: expensive model executes, cheap model critiques.
 
 Every MAP-compliant tool declares how its actions can be reversed:
 
-| Strategy | When | How Rollback Works |
-|----------|------|-------------------|
-| **COMPENSATE** | Systems that don't allow hard deletes (ERPs, accounting) | Dispatch a compensating action (e.g., credit memo for duplicate invoice) |
-| **RESTORE** | CRUD APIs with GET + PUT | Auto-capture state before write, push original state back on rollback |
-| **ESCALATE** | Irreversible actions (wire transfers, emails, deploys) | Intercept before execution, require human approval |
+| Strategy | When | How Rollback Works | Limitations |
+|----------|------|-------------------|-------------|
+| **COMPENSATE** | Systems that don't allow hard deletes (ERPs, accounting) | Dispatch a compensating action (e.g., credit memo for duplicate invoice) | Matches how regulated industries already work (banks post reversing entries, ERPs issue credit memos). The strongest strategy. |
+| **RESTORE** | CRUD APIs with GET + PUT | Captures state before write via `tool.capture()`, pushes original state back on rollback via `tool.restore()` | **Concurrent modification risk:** if another process modifies the same record between action and rollback, restore blindly overwrites their changes (last-write-wins). Best for single-writer environments. |
+| **ESCALATE** | Irreversible actions (wire transfers, emails, deploys) | Intercepts before execution — the tool never runs without human approval | Not a rollback strategy. This is a prevention gate. The correct answer for actions that genuinely cannot be undone. |
+
+**What rollback can't do:**
+
+- **Side effects that left the system.** An email was sent and read. A Slack message was delivered. No rollback fixes that — ESCALATE is the right strategy for these actions.
+- **Distributed state across multiple services.** If an agent updated Stripe AND Salesforce AND sent a notification, rolling back one without the others leaves inconsistent state. Coordinated multi-service rollback is a v0.2 problem.
+- **Time-sensitive operations.** A stock was sold at $100. By the time rollback runs, the price is $87. COMPENSATE can issue a reversing trade, but the economic outcome is different.
+
+MAP makes rollback **possible and structured** for the majority of agent actions that are API CRUD operations. For the rest, ESCALATE gates them before execution.
 
 ### 4. State Rollback
 
-One-click revert to any prior point in the ledger:
+Revert to any prior point in the ledger:
 - The rollback itself is logged to the provenance chain
 - Rollback doesn't delete history — it preserves the full chain and adds a revert entry
-- Surgical rollback: revert one agent's action without affecting others
+- For RESTORE tools, rollback calls `tool.restore()` against the external system — not just in-memory snapshot restoration
 
 ### 5. Multi-Agent Provenance (KYA — Know Your Agent)
 
