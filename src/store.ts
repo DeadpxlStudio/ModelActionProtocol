@@ -3,8 +3,10 @@ import type { LedgerEntry, LedgerEntryStatus } from "./protocol.js";
 /**
  * LedgerStore Interface
  * 
- * Provides persistence for ledger entries. Implementations can be 
- * in-memory (default), SQLite, PostgreSQL, etc.
+ * Provides persistence for ledger entries. Implementations can be:
+ * - In-memory (default): Simple array-based storage, not persistent.
+ * - SQLite: Local file persistence for single-process use (Implemented).
+ * - PostgreSQL: Planned for production-grade, multi-process deployments (See Issue #3).
  */
 export interface LedgerStore {
   /** Append a new entry to the store */
