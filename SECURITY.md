@@ -4,7 +4,7 @@
 
 If you discover a security vulnerability in `@model-action-protocol/core`, please report it responsibly.
 
-**Do not open a public issue.** Instead, email: **neil@deadpxl.studio**
+**Do not open a public issue.** Instead, email: **deadpxlstudio@gmail.com**
 
 Include:
 - Description of the vulnerability
