@@ -20,14 +20,25 @@ import type {
 } from "./protocol.js";
 import { MAP_VERSION, MAP_PROTOCOL } from "./protocol.js";
 import { captureSnapshot, computeEntryHash } from "./snapshot.js";
+import { LedgerStore } from "./store.js";
 
 export class Ledger {
   private entries: LedgerEntry[] = [];
   private listeners: MAPEventHandler[] = [];
   private serializeState?: (state: unknown) => string;
+  private store?: LedgerStore;
 
-  constructor(options?: { serializeState?: (state: unknown) => string }) {
+  constructor(options?: { 
+    serializeState?: (state: unknown) => string,
+    store?: LedgerStore 
+  }) {
     this.serializeState = options?.serializeState;
+    this.store = options?.store;
+
+    // Load existing entries if a store is provided
+    if (this.store) {
+      this.entries = this.store.getEntries();
+    }
   }
 
   /**
@@ -105,6 +116,11 @@ export class Ledger {
     };
 
     this.entries.push(entry);
+
+    if (this.store) {
+      this.store.append(entry);
+    }
+
     this.emit({ type: "action:complete", entry });
     this.emit({ type: "critic:verdict", entry });
 
@@ -134,6 +150,11 @@ export class Ledger {
     for (let i = targetIdx; i < this.entries.length; i++) {
       if (this.entries[i].status !== "ROLLED_BACK") {
         this.entries[i] = { ...this.entries[i], status: "ROLLED_BACK" };
+        
+        if (this.store) {
+          this.store.updateStatus(this.entries[i].id, "ROLLED_BACK");
+        }
+
         reverted++;
       }
     }
@@ -242,5 +263,8 @@ export class Ledger {
    */
   clear(): void {
     this.entries = [];
+    if (this.store) {
+      this.store.clear();
+    }
   }
 }
