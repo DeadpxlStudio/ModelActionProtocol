@@ -224,11 +224,11 @@ map.verifyIntegrity(); // → { valid: true }
 
 ## The Paved Path: Pre-Built Tool Packages
 
-Instead of writing reversal schemas from scratch, use pre-built MAP-compliant tools:
+Instead of writing reversal schemas from scratch, use pre-built MAP-compliant tools. **The first example ships in this repo at [`examples/tools-stripe`](examples/tools-stripe)** — drop it directly into your project while the npm packages get published:
 
 ```typescript
-// Drop in Stripe tools — provenance comes for free
-import { stripeTools } from '@model-action-protocol/tools-stripe';
+// Example pattern — see examples/tools-stripe in this repo for the full implementation
+import { stripeTools } from './tools-stripe';
 stripeTools.forEach(tool => map.addTool(tool));
 ```
 
