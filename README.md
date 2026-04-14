@@ -542,7 +542,7 @@ The strategy:
 npm test
 ```
 
-58 tests covering: ledger chaining, tamper detection, critic integration (PASS/CORRECTED/FLAGGED), auto-correction, ESCALATE execution gating, RESTORE capture/restore lifecycle, state rollback, provenance of undo, audit export, event emission, sequence execution, tiered critic routing, custom risk classifiers, learning engine (rule extraction, fine-tuning export, agent memory), tool builders, serialization edge cases, and chain verification.
+60+ tests covering: ledger chaining, tamper detection, critic integration (PASS/CORRECTED/FLAGGED), auto-correction, ESCALATE execution gating, RESTORE capture/restore lifecycle, state rollback, provenance of undo, audit export, event emission, sequence execution, tiered critic routing, custom risk classifiers, learning engine (rule extraction, fine-tuning export, agent memory), tool builders, serialization edge cases, and chain verification.
 
 ---
 
