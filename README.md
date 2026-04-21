@@ -6,7 +6,7 @@ MCP gave Claude the hands. MAP gives Claude the receipt.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-58%2F58-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-60%2B-brightgreen.svg)]()
 
 > **Building v0.2:** Solving distributed cross-API rollbacks. [Join the RFC](https://github.com/DeadpxlStudio/ModelActionProtocol/issues/1) to help architect the universal undo.
 
