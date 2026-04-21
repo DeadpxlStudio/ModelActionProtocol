@@ -152,6 +152,52 @@ npm install @model-action-protocol/core
 
 ---
 
+## Persistence (Optional)
+
+By default, the ledger lives in memory. For production, MAP ships two pluggable storage adapters. Both are **optional peer dependencies** — install whichever you need.
+
+### PostgreSQL
+
+```bash
+npm install pg
+```
+
+```typescript
+import { MAP } from '@model-action-protocol/core';
+import { PostgresLedgerStore } from '@model-action-protocol/core/postgres';
+
+const store = new PostgresLedgerStore({
+  connectionString: process.env.DATABASE_URL,
+  tableName: 'ledger_entries', // optional, default: 'ledger_entries'
+  sessionId: 'default',        // optional, for multi-tenant isolation
+});
+
+const map = await MAP.load({ ...config, store }, critic);
+```
+
+Connection pooling, JSONB entries, concurrent-write retry logic. Contributed by [@mel-cell](https://github.com/mel-cell).
+
+### SQLite
+
+```bash
+npm install better-sqlite3
+```
+
+```typescript
+import { MAP } from '@model-action-protocol/core';
+import { SQLiteLedgerStore } from '@model-action-protocol/core/sqlite';
+
+const store = new SQLiteLedgerStore('./ledger.db');
+
+const map = await MAP.load({ ...config, store }, critic);
+```
+
+WAL mode, prepared-statement caching, atomic transactions. Good for single-node deployments.
+
+> Use `MAP.load()` instead of `new MAP()` when using a persistent store — it reads any existing entries on startup. `new MAP()` skips that step.
+
+---
+
 ## Quick Start
 
 ```typescript
