@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.1.0 (Python reference implementation) — 2026-04-25
+
+First feature-complete release of `map-protocol` on PyPI. Conforms to MAP spec v0.1.0.
+
+**Includes everything from rc1 through rc3** plus the demo artifacts:
+
+- `python/examples/quickstart.ipynb` — narrated Jupyter walkthrough; cross-language conformance proof in the last cell.
+- `python/examples/fastapi_app/` — HTTP service wrapping the canonical scenario; demonstrates `asyncio.to_thread()` for sync MAP from async FastAPI handlers (eliminated in v0.2 via `AsyncMap`).
+- `python/tests/test_sdk_integration.py` — mocked Anthropic tool-use loop, runs every PR.
+- `python/tests/test_sdk_integration_live.py` — same scenario, real API, gated on `ANTHROPIC_API_KEY` (nightly).
+
+**Verification at release:**
+
+- 108 Python tests pass (snapshot, ledger, map, learning, persistence, conformance, SDK integration). 1 Postgres test + 2 live SDK tests skipped on missing env vars.
+- 146 TS tests pass under the JCS-migrated reference impl.
+- Cross-language fixtures verify byte-identical in both directions across all 6 v0.1 fixtures (semantic + edge cases).
+- Wheel built clean; `twine check` passes; clean-venv install works on Python 3.14.
+- `npm publish --dry-run` clean for the migrated `@model-action-protocol/core@0.2.0`.
+
+**Distribution:** `pip install map-protocol`. Source: [`python/`](python/). Spec: [`spec/SPEC.md`](spec/SPEC.md).
+
 ## v0.1.0-rc3 (Python reference implementation) — 2026-04-25
 
 Two real bugs surfaced while building the FastAPI demo. Both are
