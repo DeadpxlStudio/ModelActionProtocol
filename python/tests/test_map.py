@@ -168,3 +168,161 @@ def test_wrap_tool_call_handles_tool_exception() -> None:
     assert "kapow" in result["content"]
     # Ledger entry not written when the tool raised — the action didn't complete.
     assert len(m.get_entries()) == 0
+
+
+# ─── Verification items from the v0.1.0-rc1 review ─────────────────────────
+
+
+def test_rollback_stop_on_first_failure_leaves_ledger_untouched() -> None:
+    """Verification item #1 — rollback semantics under partial failure.
+
+    A failing reverser must propagate as ReversalFailed and the ledger
+    MUST remain untouched (no entries marked ROLLED_BACK, no rollback
+    record appended). This is the all-or-nothing guarantee at the ledger
+    layer, locked in v0.1.
+    """
+    from map import ReversalFailed
+
+    m = Map()
+
+    def good_reverser(action: Action, output: Any) -> Any:
+        return None
+
+    def boom_reverser(action: Action, output: Any) -> Any:
+        raise RuntimeError("reverser exploded")
+
+    @m.reversible(reverser=good_reverser)
+    def first_action(x: int) -> dict[str, Any]:
+        return {"ok": True}
+
+    @m.reversible(reverser=boom_reverser)
+    def second_action(x: int) -> dict[str, Any]:
+        return {"ok": True}
+
+    e1 = m.execute(Action(tool="first_action", input={"x": 1}, output={"ok": True}))
+    e2 = m.execute(Action(tool="second_action", input={"x": 2}, output={"ok": True}))
+
+    # rollback_to(e1) reverses e2 first (newest), then e1.
+    # e2's reverser raises → ledger is untouched, exception propagates.
+    with pytest.raises(ReversalFailed):
+        m.rollback_to(e1.id)
+
+    # Ledger must be unchanged.
+    assert m.get_entry(e1.id).status == "ACTIVE"
+    assert m.get_entry(e2.id).status == "ACTIVE"
+    # No ROLLBACK record was appended.
+    assert all(e.action.tool != "ROLLBACK" for e in m.get_entries())
+
+
+def test_rollback_runs_reversers_newest_first() -> None:
+    """Saga compensation order — newest-first, oldest-last."""
+    m = Map()
+    invocation_order: list[str] = []
+
+    def make_reverser(name: str):
+        def _r(action: Action, output: Any) -> Any:
+            invocation_order.append(name)
+            return None
+
+        return _r
+
+    @m.reversible(reverser=make_reverser("first"))
+    def first(x: int) -> dict[str, Any]:
+        return {"ok": True}
+
+    @m.reversible(reverser=make_reverser("second"))
+    def second(x: int) -> dict[str, Any]:
+        return {"ok": True}
+
+    @m.reversible(reverser=make_reverser("third"))
+    def third(x: int) -> dict[str, Any]:
+        return {"ok": True}
+
+    e1 = m.execute(Action(tool="first", input={"x": 1}, output={"ok": True}))
+    m.execute(Action(tool="second", input={"x": 2}, output={"ok": True}))
+    m.execute(Action(tool="third", input={"x": 3}, output={"ok": True}))
+
+    m.rollback_to(e1.id)
+    assert invocation_order == ["third", "second", "first"]
+
+
+def test_decorator_stack_warns_on_overwrite(caplog: Any) -> None:
+    """Verification item #2 — stacking decorators on one fn warns on overwrite.
+
+    Both ``@m.reversible`` and ``@m.escalate`` register a reverser keyed by
+    the function name. The second registration silently overwrote the first
+    in pre-rc1; rc2 emits a WARNING under logger ``map.reversal``.
+    """
+    import logging
+
+    m = Map()
+
+    def reverser_one(action: Action, output: Any) -> Any:
+        return None
+
+    with caplog.at_level(logging.WARNING, logger="map.reversal"):
+        @m.reversible(reverser=reverser_one)
+        @m.escalate(approver="ceo@example.com")
+        def my_action(x: int) -> dict[str, Any]:
+            return {"ok": True}
+
+    overwrite_warnings = [r for r in caplog.records if "reverser overwrite" in r.message]
+    assert overwrite_warnings, "expected a 'reverser overwrite' warning when stacking decorators"
+
+
+def test_tool_schema_shape_matches_anthropic_tool_definition() -> None:
+    """Verification item #3 — `tool_schema` produces an Anthropic-compatible shape.
+
+    Anthropic's `messages.create(tools=[...])` expects each tool to have
+    `name`, `description`, and `input_schema` (with `type: "object"`).
+    """
+    m = Map()
+
+    def reverser(action: Action, output: Any) -> Any:
+        return None
+
+    @m.reversible(reverser=reverser)
+    def place_order(item_id: str, quantity: int = 1) -> dict[str, Any]:
+        """Place a customer order for a product.
+
+        item_id is the SKU; quantity defaults to 1.
+        """
+        return {"orderId": "O-1"}
+
+    schema = place_order.tool_schema  # type: ignore[attr-defined]
+    assert schema["name"] == "place_order"
+    assert "Place a customer order" in schema["description"]
+    assert schema["input_schema"]["type"] == "object"
+    assert "item_id" in schema["input_schema"]["properties"]
+    assert schema["input_schema"]["properties"]["item_id"] == {"type": "string"}
+    # quantity has a default, so it is NOT required
+    assert "item_id" in schema["input_schema"]["required"]
+    assert "quantity" not in schema["input_schema"]["required"]
+
+
+def test_learning_export_shape_documented() -> None:
+    """Verification item #4 — fine-tuning export shape is the documented MAP-native shape."""
+    from map import LearningEngine
+    from map.core.action import LedgerEntry
+
+    m = Map()
+    entry = m.execute(
+        Action(tool="x", input={}, output=None),
+    )
+    # Force an "approved" annotation so the entry shows up in export.
+    m.ledger._entries[0] = entry.model_copy(
+        update={
+            "approval": "approved",
+            "critic": entry.critic.model_copy(update={"verdict": "CORRECTED"}),
+        }
+    )
+
+    engine = LearningEngine()
+    exported = engine.export_fine_tuning_data(m.get_entries())
+    assert len(exported) == 1
+    item = exported[0]
+    # Shape per docstring: {input: {action, stateBefore, stateAfter}, output: {...}, humanApproval}
+    assert set(item.keys()) == {"input", "output", "humanApproval"}
+    assert set(item["input"].keys()) == {"action", "stateBefore", "stateAfter"}
+    assert "verdict" in item["output"]
+    assert item["humanApproval"] == "approved"

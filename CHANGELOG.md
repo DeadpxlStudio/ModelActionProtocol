@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.1.0-rc2 (Python reference implementation) — 2026-04-25
+
+Verification-pass fixes from rc1 review. One real behavior change:
+
+- **Rollback semantics locked, behavior changed** (`Map.rollback_to`).
+  rc1 silently absorbed reverser failures and marked all entries
+  `ROLLED_BACK` regardless. rc2 stops on first failure, propagates the
+  exception (`NotReversible` or `ReversalFailed`), and leaves the ledger
+  untouched — no entries marked, no `ROLLBACK` record appended. This is
+  "all-or-nothing at the ledger layer." Side effects from already-completed
+  reversers persist (MAP cannot un-cancel an order); the docstring is now
+  explicit about this. Reversers also run in **reverse-sequence order**
+  (newest first), matching saga compensation conventions.
+- **Decorator stack collisions now warn.** Stacking `@m.reversible` and
+  `@m.escalate` on the same function used to silently overwrite the first
+  registration. rc2 emits a `WARNING` under logger `map.reversal` on
+  overwrite. Pass `replace=True` to silence intentional overwrites.
+- **`tool_schema` now resolves PEP 563 string annotations.** The Anthropic
+  tool definition shape works for functions with `from __future__ import
+  annotations` — primitive types now produce `{"type": "string"}` etc.
+  rather than `{}`.
+- **`LearningEngine.export_fine_tuning_data` format documented.** The
+  export is **MAP-native, not provider-native** — neither OpenAI's
+  fine-tune JSONL nor Anthropic's. Docstring now explicit; converters
+  may ship in `map.learning.adapters` in a future minor release.
+- **`python/.gitignore` added.** Excludes `__pycache__/`, `*.pyc`,
+  `.venv/`, build artifacts, and tooling caches. The .pyc files that
+  shipped in rc1's commit are removed from tracking.
+
+105 Python tests pass (was 97; +5 verification tests).
+
 ## v0.1.0-rc1 (Python reference implementation) — 2026-04-25
 
 Feature-complete v0.1 Python library. Demos + final release prep pending.

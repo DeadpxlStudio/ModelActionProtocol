@@ -42,13 +42,36 @@ class ReverserRegistry:
         tool: str,
         reverser: Reverser,
         schema: Reversal | None = None,
+        *,
+        replace: bool = False,
     ) -> None:
         """Register a reverser for a tool.
 
         ``schema`` is the optional declarative reversal description (used by
-        the LLM critic and external auditors). Re-registering a tool
-        replaces the prior reverser without warning — last write wins.
+        the LLM critic and external auditors).
+
+        Re-registering an already-registered tool emits a WARNING log
+        (logger ``map.reversal``). Pass ``replace=True`` to silence the
+        warning when overwrite is intentional. The last call wins
+        regardless. This guards against the silent footgun where stacking
+        decorators on a single function (e.g., ``@m.reversible @m.escalate``)
+        registers two different reversers under the same name and the
+        second one wins without telling anyone.
         """
+        if tool in self._reversers and not replace:
+            prior_strategy = (
+                self._schemas[tool].strategy if tool in self._schemas else "unknown"
+            )
+            new_strategy = schema.strategy if schema is not None else "unknown"
+            logger.warning(
+                "reverser overwrite for tool=%s (prior strategy=%s, new strategy=%s); "
+                "if intentional, pass replace=True to silence this warning. "
+                "Common cause: stacking @reversible / @compensate / @escalate decorators "
+                "on the same function.",
+                tool,
+                prior_strategy,
+                new_strategy,
+            )
         self._reversers[tool] = reverser
         if schema is not None:
             self._schemas[tool] = schema

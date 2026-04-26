@@ -177,13 +177,23 @@ def tool_schema(fn: Callable[..., Any]) -> dict[str, Any]:
     Complex parameter types should be Pydantic ``BaseModel`` subclasses;
     their ``model_json_schema()`` is inlined.
     """
+    import typing
+
     sig = inspect.signature(fn)
+    # PEP 563 / `from __future__ import annotations` makes annotations
+    # strings; resolve them via get_type_hints so we get the real types.
+    try:
+        hints = typing.get_type_hints(fn)
+    except Exception:
+        hints = {}
     properties: dict[str, dict[str, Any]] = {}
     required: list[str] = []
     for name, param in sig.parameters.items():
         if name == "self":
             continue
-        annotation = param.annotation if param.annotation is not inspect.Parameter.empty else str
+        annotation = hints.get(name, param.annotation)
+        if annotation is inspect.Parameter.empty:
+            annotation = str
         prop = _annotation_to_schema(annotation)
         properties[name] = prop
         if param.default is inspect.Parameter.empty:

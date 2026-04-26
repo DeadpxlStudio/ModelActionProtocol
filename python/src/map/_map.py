@@ -201,23 +201,62 @@ class Map:
     # ─── Rollback ──────────────────────────────────────────────────────────
 
     def rollback_to(self, entry_id: str) -> dict[str, Any]:
-        """Mark all entries from ``entry_id`` onward as ROLLED_BACK.
+        """Reverse all entries from ``entry_id`` onward and mark them ROLLED_BACK.
 
-        For each rolled-back entry whose tool has a registered reverser,
-        invoke the reverser with the recorded action and output. Failures
-        are logged but do not abort the overall rollback — the ledger
-        still records the rollback as provenance.
+        **Semantics (v0.1, locked):**
+
+        - Reversers run in **reverse-sequence order** — newest entry first,
+          oldest last — matching saga compensation order.
+        - Entries with no registered reverser are skipped silently (no
+          reversal needed; common for read-only or non-side-effecting tools).
+        - **Stop-on-first-failure for ledger state.** If any reverser raises
+          (``NotReversible`` / ``ReversalFailed`` / any exception), this
+          method propagates the exception and the ledger is **NOT** updated
+          — no entries are marked ROLLED_BACK, no rollback record is
+          appended. The ledger reflects only complete rollbacks.
+        - **World-side effects from already-completed reversers persist.**
+          MAP cannot un-cancel an order, un-refund a charge, or un-send an
+          email. Callers receiving an exception MUST inspect the error,
+          decide what to do about partially-reversed external state, and
+          either re-attempt the rollback (the already-reversed entries will
+          have been marked when the next attempt succeeds) or coordinate
+          manual reconciliation.
+
+        Only when every reverser succeeds does the ledger atomically mark
+        the affected entries ROLLED_BACK and append a ROLLBACK provenance
+        entry. This is "all-or-nothing at the ledger layer" — the strongest
+        guarantee MAP can offer without a 2PC protocol.
+
+        Returns:
+            ``{"state": <restored snapshot>, "entriesReverted": <int>}``
+            on full success.
+
+        Raises:
+            EntryNotFound: ``entry_id`` is not in the ledger.
+            NotReversible: an affected entry has no registered reverser
+                AND the runtime requires one (currently never — missing
+                reversers are skipped silently in v0.1).
+            ReversalFailed: a registered reverser raised. The exception
+                wraps the underlying error; the failed entry's id and tool
+                are in the message.
         """
-        # First, fan out the reverser calls for each affected entry.
         target = self._ledger.get_entry(entry_id)
         if target is None:
             raise EntryNotFound(f"no ledger entry with id {entry_id}")
 
-        affected = [
-            e
-            for e in self._ledger.get_entries()
-            if e.sequence >= target.sequence and e.status == "ACTIVE"
-        ]
+        # Reverse-sequence order: newest first.
+        affected = sorted(
+            [
+                e
+                for e in self._ledger.get_entries()
+                if e.sequence >= target.sequence and e.status == "ACTIVE"
+            ],
+            key=lambda e: e.sequence,
+            reverse=True,
+        )
+
+        # Run all reversers first. Any failure short-circuits — the ledger
+        # is left untouched.
         for e in affected:
             reverser = self._reversers.get_reverser(e.action.tool)
             if reverser is None:
@@ -227,17 +266,9 @@ class Map:
                     e.id,
                 )
                 continue
-            try:
-                self._reversers.execute(e.action, e.action.output)
-            except Exception as exc:
-                logger.warning(
-                    "reverser for entry %s (tool=%s) failed: %s",
-                    e.id,
-                    e.action.tool,
-                    exc,
-                )
+            self._reversers.execute(e.action, e.action.output)
 
-        # Then update ledger state. The ledger appends a ROLLBACK entry.
+        # All reversers succeeded → update ledger state atomically.
         return self._ledger.rollback_to(entry_id)
 
     # ─── Read accessors ────────────────────────────────────────────────────

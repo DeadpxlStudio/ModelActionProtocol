@@ -202,7 +202,28 @@ class LearningEngine:
     def export_fine_tuning_data(
         self, entries: list[LedgerEntry]
     ) -> list[dict[str, Any]]:
-        """Level 2 — export human-resolved corrections as training examples."""
+        """Level 2 — export human-resolved corrections as training examples.
+
+        **Export format is MAP-native, not provider-native.** Each item is::
+
+            {
+              "input":  {"action": ActionRecord, "stateBefore": Any, "stateAfter": Any},
+              "output": {"verdict": str, "reason": str,
+                         "correction": {"tool": str, "input": dict} | None},
+              "humanApproval": "approved" | "rejected" | "pending"
+            }
+
+        This is **not** OpenAI's fine-tune JSONL shape (``{"messages": [...]}``)
+        nor Anthropic's. To feed the export to a specific provider's
+        fine-tuning API, write a small adapter — typically 10–20 lines that
+        flattens MAP's input/output into the provider's expected role-tagged
+        message format. A future minor release may ship adapters in
+        ``map.learning.adapters`` if there's demand.
+
+        Only entries whose ``approval`` is set (``approved`` / ``rejected`` /
+        ``pending``) are included — unresolved corrections are not training
+        signal.
+        """
         out: list[dict[str, Any]] = []
         for e in entries:
             if e.critic.verdict not in ("CORRECTED", "FLAGGED"):
