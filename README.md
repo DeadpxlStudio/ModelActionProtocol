@@ -6,6 +6,8 @@ MCP gave Claude the hands. MAP gives Claude the receipt.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Spec v0.1](https://img.shields.io/badge/spec-v0.1.0%20frozen-blue.svg)](spec/SPEC.md)
+[![PyPI](https://img.shields.io/pypi/v/model-action-protocol?label=PyPI&color=informational)](https://pypi.org/project/model-action-protocol/)
+[![npm](https://img.shields.io/npm/v/@model-action-protocol/core?label=npm&color=informational)](https://www.npmjs.com/package/@model-action-protocol/core)
 [![Tests](https://img.shields.io/badge/tests-254%20passing-brightgreen.svg)]()
 [![JCS RFC 8785](https://img.shields.io/badge/canonicalization-JCS%20RFC%208785-purple.svg)](https://www.rfc-editor.org/rfc/rfc8785)
 
