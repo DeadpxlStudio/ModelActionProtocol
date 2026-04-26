@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "model-action-protocol"
-version = "0.1.1"
+version = "0.1.2"
 description = "MAP (Model Action Protocol) — verifiable provenance, self-healing critique, and state rollback for autonomous AI agents"
 readme = "README.md"
 license = "MIT"

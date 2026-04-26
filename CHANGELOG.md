@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.2 (Python reference implementation) — 2026-04-25
+
+Fix metadata/runtime version drift caught immediately after publishing v0.1.1.
+
+- `pyproject.toml` and `python/src/map/_version.py` were out of sync: PyPI metadata said `0.1.1` but `import map; map.__version__` returned `0.1.0`. The library worked correctly; only the version constant was wrong, which would mislead anyone introspecting the installed package.
+- v0.1.1 has been **yanked** from PyPI (the wheel is still downloadable for anyone who pinned to it, but `pip install model-action-protocol` now resolves to v0.1.2).
+
 ## v0.1.1 (Python reference implementation) — 2026-04-25
 
 Pre-publish package rename. No code changes from v0.1.0; same surface, same wire format, same conformance.

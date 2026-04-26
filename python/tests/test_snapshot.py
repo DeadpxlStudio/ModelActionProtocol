@@ -8,6 +8,8 @@ other conformance test will follow.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from map import (
@@ -19,6 +21,28 @@ from map import (
     state_hash,
     verify_chain,
 )
+
+
+def test_pyproject_and_runtime_version_match() -> None:
+    """Regression — pyproject.toml version MUST match map.__version__.
+
+    Caught after v0.1.1 shipped to PyPI with metadata 0.1.1 but
+    `import map; map.__version__` returning 0.1.0. The mismatch was
+    cosmetic — the library worked — but it misled anyone introspecting
+    the installed package, so v0.1.1 was yanked. This test pins the
+    invariant so it can't recur silently.
+    """
+    import tomllib
+
+    from map import __version__
+
+    pyproject = Path(__file__).resolve().parent.parent / "pyproject.toml"
+    with pyproject.open("rb") as f:
+        meta_version = tomllib.load(f)["project"]["version"]
+    assert meta_version == __version__, (
+        f"pyproject.toml version {meta_version!r} != map.__version__ {__version__!r}; "
+        "update src/map/_version.py to match before publishing"
+    )
 
 
 # ─── §6.4 Worked example — the load-bearing test ────────────────────────────
