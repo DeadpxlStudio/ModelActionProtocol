@@ -1,0 +1,112 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "1522ddd8-cef8-4198-8c62-26bcfa365d80",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "debit",
+        "input": {
+          "amount": 10
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "a7a3b046532ad30415ec38f11e6c0715169b18a7440b8139e587b659c5c77b8f",
+      "stateAfter": "40c03d215dacfef0e553ca2cb6bcaf45e8559c489ea56dff6e8797343d83b768",
+      "snapshots": {
+        "before": {
+          "balance": 100
+        },
+        "after": {
+          "balance": 90
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "640bf6eab3db5165b696e08e53a778c2767c6d6af8cfed1bd47d4dfe2bdee54c",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "debit within available balance"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "b8384341-9f97-427d-85fb-520e54af5e58",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "debit",
+        "input": {
+          "amount": 5
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "40c03d215dacfef0e553ca2cb6bcaf45e8559c489ea56dff6e8797343d83b768",
+      "stateAfter": "5c798301df83006bffe4f3b7bd3b712f95404cfd2cda4ad2062430e1abd629a0",
+      "snapshots": {
+        "before": {
+          "balance": 90
+        },
+        "after": {
+          "balance": 85
+        }
+      },
+      "parentHash": "640bf6eab3db5165b696e08e53a778c2767c6d6af8cfed1bd47d4dfe2bdee54c",
+      "hash": "d825d27767b480f5981eef309830666f909ce5eb4406d6cd23162bf5d8c0eeb9",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "original debit of 50 exceeded balance; corrected to 5",
+        "correction": {
+          "tool": "debit",
+          "input": {
+            "amount": 5
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "8f047685-4e06-4e38-8737-60048f206e6b",
+      "sequence": 2,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "debit",
+        "input": {
+          "amount": 5
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "5c798301df83006bffe4f3b7bd3b712f95404cfd2cda4ad2062430e1abd629a0",
+      "stateAfter": "8021b469495e3877a595a464da914621370274c14c66b296d606d82ddb085571",
+      "snapshots": {
+        "before": {
+          "balance": 85
+        },
+        "after": {
+          "balance": 80
+        }
+      },
+      "parentHash": "d825d27767b480f5981eef309830666f909ce5eb4406d6cd23162bf5d8c0eeb9",
+      "hash": "218f856bec40d1e6b8bbb82e4e99e0b33435b5f7adf0a678a8553fec3c0cac6a",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "ok"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 3,
+    "committed": 3,
+    "rolledBack": 0,
+    "corrections": 1,
+    "flags": 0
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "f41df572-c400-4305-877d-d9d134ca9f09",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "wireTransfer",
+        "input": {
+          "amount": 100000,
+          "to": "external"
+        },
+        "reversalStrategy": "ESCALATE"
+      },
+      "stateBefore": "8daff7bb1afb6a77526f0101ae0f7cebc46ad7f840b19d9120c09b76f9da51ee",
+      "stateAfter": "8daff7bb1afb6a77526f0101ae0f7cebc46ad7f840b19d9120c09b76f9da51ee",
+      "snapshots": {
+        "before": {
+          "account": {
+            "id": "A1"
+          }
+        },
+        "after": {
+          "account": {
+            "id": "A1"
+          }
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "2a6fd42a0a97802909acc10210da369c29374f17560ad5179c1df971feb87c77",
+      "critic": {
+        "verdict": "FLAGGED",
+        "reason": "wire transfer over $50k requires human approval"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "committed": 1,
+    "rolledBack": 0,
+    "corrections": 0,
+    "flags": 1
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "92e773ce-db5f-4feb-8df9-501cf8fe019a",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "issueInvoice",
+        "input": {
+          "amount": 250,
+          "customerId": "C-77"
+        },
+        "output": {
+          "invoiceId": "INV-1"
+        },
+        "reversalStrategy": "COMPENSATE"
+      },
+      "stateBefore": "0dd3ce96c77eb66ec1d9b08802d4a7fca4770796e89944531ad725923b974468",
+      "stateAfter": "ef9a85591fed3700223c2e09c6725936a2ffd53749feabde99fc9aaf1de8fafd",
+      "snapshots": {
+        "before": {
+          "invoices": []
+        },
+        "after": {
+          "invoices": [
+            {
+              "id": "INV-1",
+              "amount": 250
+            }
+          ]
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "ed7f2e1855503d2571753ccbfc99d1dda5058baef77eb1b7ab08f9e22e2e8f0c",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "invoice issued"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 1,
+    "committed": 1,
+    "rolledBack": 0,
+    "corrections": 0,
+    "flags": 0
+  }
+}

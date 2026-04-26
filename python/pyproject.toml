@@ -1,0 +1,89 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "map-protocol"
+version = "0.1.0"
+description = "MAP (Model Action Protocol) — verifiable provenance, self-healing critique, and state rollback for autonomous AI agents"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10,<3.15"
+authors = [
+  { name = "deadpxl", email = "deadpxlstudio@gmail.com" },
+]
+keywords = ["ai", "agents", "provenance", "rollback", "trust", "safety", "map-protocol"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries",
+  "Typing :: Typed",
+]
+dependencies = [
+  "pydantic>=2.5,<3",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3"]
+anthropic = ["anthropic>=0.40"]
+fastapi = ["fastapi>=0.115", "uvicorn[standard]>=0.32"]
+all = [
+  "psycopg[binary]>=3",
+  "anthropic>=0.40",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+]
+dev = [
+  "pytest>=8.0",
+  "hypothesis>=6.100",
+  "ruff>=0.7",
+  "mypy>=1.13",
+  "pyright>=1.1.380",
+  "respx>=0.21",
+  "build>=1.2",
+  "twine>=5.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/DeadpxlStudio/ModelActionProtocol"
+Repository = "https://github.com/DeadpxlStudio/ModelActionProtocol"
+Specification = "https://github.com/DeadpxlStudio/ModelActionProtocol/blob/main/spec/SPEC.md"
+Changelog = "https://github.com/DeadpxlStudio/ModelActionProtocol/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/map"]
+
+[tool.pytest.ini_options]
+markers = [
+  "conformance: cross-language conformance tests",
+  "integration: integration tests (Phase 4)",
+  "perf: performance smoke tests; release-only",
+  "postgres: requires DB_HOST env var",
+  "live_api: requires ANTHROPIC_API_KEY env var; nightly only",
+]
+testpaths = ["tests"]
+filterwarnings = [
+  "error",
+  "ignore::DeprecationWarning:pkg_resources.*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+plugins = ["pydantic.mypy"]
