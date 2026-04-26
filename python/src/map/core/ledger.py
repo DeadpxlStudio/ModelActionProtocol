@@ -111,8 +111,12 @@ class Ledger:
             critic=critic,
         )
 
-        self._entries.append(entry)
+        # Persist to the store FIRST. If this fails, leave the in-memory
+        # cache untouched — the contract is that a failed append is a
+        # no-op visible to callers, not a torn state where the cache and
+        # disk disagree.
         self._store.append(entry)
+        self._entries.append(entry)
 
         self._emit({"type": "action:complete", "entry": entry})
         self._emit({"type": "critic:verdict", "entry": entry})

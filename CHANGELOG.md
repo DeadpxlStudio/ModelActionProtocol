@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.1.0-rc3 (Python reference implementation) — 2026-04-25
+
+Two real bugs surfaced while building the FastAPI demo. Both are
+correctness fixes, no API changes.
+
+- **SQLite store is now thread-safe.** `SQLiteLedgerStore` opened the
+  connection on the main thread; FastAPI handlers run sync MAP code
+  inside `asyncio.to_thread()` worker threads, which raised
+  `sqlite3.ProgrammingError: SQLite objects created in a thread can only
+  be used in that same thread`. Now uses `check_same_thread=False` and a
+  re-entrant lock around all DB operations. SQLite itself is thread-safe
+  in default builds; the cpython wrapper's check was conservative.
+- **`Ledger.append` is now atomic across the in-memory cache and store.**
+  The old order — append to cache, then persist — left the cache and
+  disk diverged on store failure. New order — persist first, then
+  append to cache — means a failed store call leaves the ledger
+  unchanged from the caller's perspective (no torn state).
+
+108 Python tests pass + 1 Postgres skipped + 2 live SDK skipped on
+missing keys. FastAPI demo smoke test now succeeds end-to-end:
+place / flag / rollback / inspect ledger.
+
 ## v0.1.0-rc2 (Python reference implementation) — 2026-04-25
 
 Verification-pass fixes from rc1 review. One real behavior change:

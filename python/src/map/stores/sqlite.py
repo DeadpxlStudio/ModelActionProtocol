@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import sqlite3
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -41,17 +42,29 @@ class SQLiteLedgerStore:
     def __init__(self, path: str | Path = "map.db") -> None:
         self._path = str(path)
         self._conn: sqlite3.Connection | None = None
+        # Python's sqlite3 enforces "connection used only on its creation
+        # thread" by default. MAP is sync at v0.1 but FastAPI users will
+        # run the sync `Map` from `asyncio.to_thread()` worker threads, so
+        # we disable that check and serialize all access via this lock.
+        # SQLite itself is thread-safe in default builds; only the cpython
+        # wrapper's check is conservative.
+        self._lock = threading.RLock()
         self._open()
 
     # ─── Connection management ─────────────────────────────────────────────
 
     def _open(self) -> None:
         try:
-            self._conn = sqlite3.connect(self._path, isolation_level=None)
+            self._conn = sqlite3.connect(
+                self._path,
+                isolation_level=None,
+                check_same_thread=False,
+            )
         except sqlite3.Error as e:
             raise StoreError(f"failed to open SQLite at {self._path!r}: {e}") from e
-        self._conn.execute("PRAGMA journal_mode=WAL")
-        self._conn.executescript(_SCHEMA)
+        with self._lock:
+            self._conn.execute("PRAGMA journal_mode=WAL")
+            self._conn.executescript(_SCHEMA)
 
     def close(self) -> None:
         if self._conn is not None:
@@ -74,42 +87,47 @@ class SQLiteLedgerStore:
 
     def append(self, entry: LedgerEntry) -> None:
         payload = json.dumps(entry.model_dump(by_alias=True, exclude_none=True))
-        try:
-            self._db.execute(
-                "INSERT INTO ledger_entries (id, sequence, timestamp, payload, status) "
-                "VALUES (?, ?, ?, ?, ?)",
-                (entry.id, entry.sequence, entry.timestamp, payload, entry.status),
-            )
-        except sqlite3.IntegrityError as e:
-            raise StoreError(
-                f"failed to append entry {entry.id} at sequence {entry.sequence}: {e}"
-            ) from e
+        with self._lock:
+            try:
+                self._db.execute(
+                    "INSERT INTO ledger_entries (id, sequence, timestamp, payload, status) "
+                    "VALUES (?, ?, ?, ?, ?)",
+                    (entry.id, entry.sequence, entry.timestamp, payload, entry.status),
+                )
+            except sqlite3.IntegrityError as e:
+                raise StoreError(
+                    f"failed to append entry {entry.id} at sequence {entry.sequence}: {e}"
+                ) from e
 
     def get_entries(self) -> list[LedgerEntry]:
-        rows = self._db.execute(
-            "SELECT payload, status FROM ledger_entries ORDER BY sequence ASC"
-        ).fetchall()
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT payload, status FROM ledger_entries ORDER BY sequence ASC"
+            ).fetchall()
         return [_load(payload, status) for (payload, status) in rows]
 
     def get_entry(self, entry_id: str) -> LedgerEntry | None:
-        row = self._db.execute(
-            "SELECT payload, status FROM ledger_entries WHERE id = ?",
-            (entry_id,),
-        ).fetchone()
+        with self._lock:
+            row = self._db.execute(
+                "SELECT payload, status FROM ledger_entries WHERE id = ?",
+                (entry_id,),
+            ).fetchone()
         if row is None:
             return None
         return _load(row[0], row[1])
 
     def update_status(self, entry_id: str, status: LedgerEntryStatus) -> None:
-        cursor = self._db.execute(
-            "UPDATE ledger_entries SET status = ? WHERE id = ?",
-            (status, entry_id),
-        )
-        if cursor.rowcount == 0:
-            raise StoreError(f"no entry with id {entry_id} to update")
+        with self._lock:
+            cursor = self._db.execute(
+                "UPDATE ledger_entries SET status = ? WHERE id = ?",
+                (status, entry_id),
+            )
+            if cursor.rowcount == 0:
+                raise StoreError(f"no entry with id {entry_id} to update")
 
     def clear(self) -> None:
-        self._db.execute("DELETE FROM ledger_entries")
+        with self._lock:
+            self._db.execute("DELETE FROM ledger_entries")
 
 
 def _load(payload: str, status: str) -> LedgerEntry:
