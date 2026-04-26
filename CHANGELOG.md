@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **Web verifier** at `apps/verifier/` — paste any MAP ledger to see chain integrity, critic verdicts, and state diffs. Runs at `verify.modelactionprotocol.org`. Encodes shareable links via gzipped URL fragments (no server storage). OG card with side-by-side VERIFIED/TAMPERED preview.
+- **`@model-action-protocol/cli`** at `packages/cli/` — `map verify <ledger.json>` (also reads stdin), `--json` for machine-readable output. Reuses `verifyChain` from core.
+- **Distribution sample fixtures** at `apps/verifier/public/` — refund-flow ledger (valid + tampered) for the verifier's "try a sample" buttons. Conformance fixtures in `spec/fixtures/v0.1/` remain canonical.
+- npm workspaces wiring (`packages/*`, `apps/*`).
+
 ## v0.1.2 (Python reference implementation) — 2026-04-25
 
 Fix metadata/runtime version drift caught immediately after publishing v0.1.1.

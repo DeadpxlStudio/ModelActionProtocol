@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #08090b;
+  --color-surface: #101216;
+  --color-surface-2: #16191f;
+  --color-border: #23262d;
+  --color-border-strong: #353a44;
+  --color-text: #f5f6f8;
+  --color-text-muted: #9ba0ab;
+  --color-text-faint: #5c6270;
+  --color-accent: #fb923c;
+  --color-accent-soft: #f59e0b22;
+  --color-success: #4ade80;
+  --color-success-soft: #4ade8022;
+  --color-danger: #ef4444;
+  --color-danger-soft: #ef444422;
+  --color-warn: #facc15;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+}
+
+body {
+  min-height: 100dvh;
+  background-image:
+    radial-gradient(60rem 40rem at 80% -10%, rgba(251, 146, 60, 0.06), transparent 60%),
+    radial-gradient(40rem 30rem at -10% 110%, rgba(74, 222, 128, 0.04), transparent 60%);
+}
+
+::selection {
+  background: rgba(251, 146, 60, 0.35);
+  color: var(--color-text);
+}
+
+/* scrollbar in monospace blocks */
+.scroll-mono::-webkit-scrollbar { height: 8px; width: 8px; }
+.scroll-mono::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 4px; }
+.scroll-mono::-webkit-scrollbar-track { background: transparent; }

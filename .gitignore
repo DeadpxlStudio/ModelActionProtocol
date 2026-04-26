@@ -4,6 +4,11 @@ dist/
 .DS_Store
 .env*
 
+# Next.js (apps/verifier)
+.next/
+out/
+next-env.d.ts
+
 # SQLite
 *.db
 *.db-journal

@@ -1,0 +1,304 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "041e87a9-7f2e-4387-9979-a25c962cd481",
+      "sequence": 0,
+      "timestamp": "2026-04-26T18:08:55.037Z",
+      "action": {
+        "tool": "getCustomer",
+        "input": {
+          "id": "cust_42"
+        },
+        "output": {
+          "id": "cust_42",
+          "name": "Aanya Iyer",
+          "email": "a@iyer.co"
+        }
+      },
+      "stateBefore": "0047b97c507fd88d595cee2ece47aa2a157ca1a4f72a4b5d76ff9216e813800b",
+      "stateAfter": "0047b97c507fd88d595cee2ece47aa2a157ca1a4f72a4b5d76ff9216e813800b",
+      "snapshots": {
+        "before": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": []
+        },
+        "after": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": []
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "982fe9b5dacb48ceecea5883369d0c8185fc356d63752d5fdafd7c52f78c39ee",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "Read action — no state change."
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "c61ee966-a4cf-4afa-9b10-5f6a8a19ffda",
+      "sequence": 1,
+      "timestamp": "2026-04-26T18:08:55.038Z",
+      "action": {
+        "tool": "issueRefund",
+        "input": {
+          "chargeId": "ch_001",
+          "amount": 4900,
+          "reason": "requested_by_customer"
+        },
+        "output": {
+          "id": "re_001",
+          "status": "succeeded",
+          "amount": 99999
+        },
+        "reversalStrategy": "COMPENSATE"
+      },
+      "stateBefore": "0047b97c507fd88d595cee2ece47aa2a157ca1a4f72a4b5d76ff9216e813800b",
+      "stateAfter": "be267531d1006fe939a0cb5006db079b7942e1566f5d7cb979a58abe58bbfaa9",
+      "snapshots": {
+        "before": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": []
+        },
+        "after": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "re_001",
+              "charge": "ch_001",
+              "amount": 4900,
+              "created": "2026-04-26",
+              "reason": "requested_by_customer"
+            }
+          ]
+        }
+      },
+      "parentHash": "982fe9b5dacb48ceecea5883369d0c8185fc356d63752d5fdafd7c52f78c39ee",
+      "hash": "81599a06970a939bc7d6fd1198ef716d513a1221cfadec70f06f12bbadb4a05a",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "Refund matches a real charge and is within the customer's eligible window."
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "e0d24c7e-936a-4a81-98ee-ac11937e497c",
+      "sequence": 2,
+      "timestamp": "2026-04-26T18:08:55.038Z",
+      "action": {
+        "tool": "sendEmail",
+        "input": {
+          "to": "a@iyer.co",
+          "subject": "Your refund of $49 has been issued",
+          "body": "Hi Aanya, your refund of $49 has been issued and will reach your card in 3-5 business days."
+        },
+        "output": {
+          "messageId": "msg_77f",
+          "queued": true
+        },
+        "reversalStrategy": "ESCALATE"
+      },
+      "stateBefore": "be267531d1006fe939a0cb5006db079b7942e1566f5d7cb979a58abe58bbfaa9",
+      "stateAfter": "be267531d1006fe939a0cb5006db079b7942e1566f5d7cb979a58abe58bbfaa9",
+      "snapshots": {
+        "before": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "re_001",
+              "charge": "ch_001",
+              "amount": 4900,
+              "created": "2026-04-26",
+              "reason": "requested_by_customer"
+            }
+          ]
+        },
+        "after": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "re_001",
+              "charge": "ch_001",
+              "amount": 4900,
+              "created": "2026-04-26",
+              "reason": "requested_by_customer"
+            }
+          ]
+        }
+      },
+      "parentHash": "81599a06970a939bc7d6fd1198ef716d513a1221cfadec70f06f12bbadb4a05a",
+      "hash": "95de5e3ca0ebb7441ccdb9324ec7c521e4a9461074b0b7bb542b4eebc6c32ef4",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "Original draft addressed customer by wrong name (Anya, not Aanya). Critic regenerated the body with the correct name.",
+        "correction": {
+          "tool": "sendEmail",
+          "input": {
+            "to": "a@iyer.co",
+            "subject": "Your refund of $49 has been issued",
+            "body": "Hi Aanya, your refund of $49 has been issued and will reach your card in 3-5 business days."
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "e9bac1c8-304a-4eb0-b8d8-9d3c55173d35",
+      "sequence": 3,
+      "timestamp": "2026-04-26T18:08:55.038Z",
+      "action": {
+        "tool": "issueRefund",
+        "input": {
+          "chargeId": "ch_001",
+          "amount": 4900,
+          "reason": "requested_by_customer"
+        },
+        "output": {
+          "halted": true,
+          "reason": "duplicate_refund_detected"
+        },
+        "reversalStrategy": "COMPENSATE"
+      },
+      "stateBefore": "be267531d1006fe939a0cb5006db079b7942e1566f5d7cb979a58abe58bbfaa9",
+      "stateAfter": "be267531d1006fe939a0cb5006db079b7942e1566f5d7cb979a58abe58bbfaa9",
+      "snapshots": {
+        "before": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "re_001",
+              "charge": "ch_001",
+              "amount": 4900,
+              "created": "2026-04-26",
+              "reason": "requested_by_customer"
+            }
+          ]
+        },
+        "after": {
+          "customer": {
+            "id": "cust_42",
+            "name": "Aanya Iyer",
+            "email": "a@iyer.co"
+          },
+          "charges": [
+            {
+              "id": "ch_001",
+              "amount": 4900,
+              "status": "succeeded",
+              "created": "2026-04-19"
+            }
+          ],
+          "refunds": [
+            {
+              "id": "re_001",
+              "charge": "ch_001",
+              "amount": 4900,
+              "created": "2026-04-26",
+              "reason": "requested_by_customer"
+            }
+          ]
+        }
+      },
+      "parentHash": "95de5e3ca0ebb7441ccdb9324ec7c521e4a9461074b0b7bb542b4eebc6c32ef4",
+      "hash": "3da2aa9f1ce4977aeedd087611f3db42fd5e0a2e3a142bae384f672afccf322c",
+      "critic": {
+        "verdict": "FLAGGED",
+        "reason": "ch_001 has already been refunded in full (re_001). A second refund would exceed the original charge."
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 4,
+    "committed": 4,
+    "rolledBack": 0,
+    "corrections": 1,
+    "flags": 1
+  }
+}

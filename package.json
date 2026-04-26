@@ -23,13 +23,20 @@
     "dist",
     "!dist/__tests__"
   ],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "vitest",
     "test:fixtures": "vitest run src/__tests__/conformance.test.ts",
     "test:python-output-conformance": "vitest run src/__tests__/python-output-conformance.test.ts",
-    "generate-fixtures": "tsx scripts/generate-fixtures.ts"
+    "generate-fixtures": "tsx scripts/generate-fixtures.ts",
+    "build:cli": "npm run build --workspace=@model-action-protocol/cli",
+    "dev:verifier": "npm run dev --workspace=verifier",
+    "build:verifier": "npm run build --workspace=verifier"
   },
   "keywords": [
     "ai",

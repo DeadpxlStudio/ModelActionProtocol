@@ -15,6 +15,50 @@ MCP gave Claude the hands. MAP gives Claude the receipt.
 
 ---
 
+## Try it in 30 seconds
+
+Paste your agent's ledger into the **MAP Verifier** and see what happened — every action, every critic verdict, every state diff, with chain integrity verified end-to-end.
+
+**Web verifier:** [`verify.modelactionprotocol.org`](https://verify.modelactionprotocol.org)
+
+**CLI:**
+```bash
+npx -p @model-action-protocol/cli map verify ./agent.ledger.json
+# or pipe a ledger from your agent:
+your-agent | jq '.ledger' | npx -p @model-action-protocol/cli map verify -
+```
+
+Don't have a ledger yet? [Try the conformance sample](https://verify.modelactionprotocol.org/?url=https://raw.githubusercontent.com/DeadpxlStudio/ModelActionProtocol/main/spec/fixtures/v0.1/pass-only-3-actions.json) — or [a tampered version](https://verify.modelactionprotocol.org/?url=https://raw.githubusercontent.com/DeadpxlStudio/ModelActionProtocol/main/apps/verifier/public/sample-tampered.ledger.json) (can you spot the corruption?).
+
+---
+
+## Repo layout
+
+Workspace monorepo. Two reference implementations of the spec, plus the verifier wedge:
+
+| Path | What it is | Published as |
+|---|---|---|
+| `spec/` | Frozen v0.1 wire-format spec + 6 conformance fixtures | — (canonical) |
+| `src/` (root) | TS reference impl — `MAP` class, ledger, critic, tool builders | `@model-action-protocol/core` (npm) |
+| `python/` | Python reference impl — `Map` orchestrator, ledger, critic, reverser registry | `model-action-protocol` (PyPI) |
+| `packages/cli/` | `map verify` CLI (and, soon, `map mcp wrap`) | `@model-action-protocol/cli` (npm) |
+| `apps/verifier/` | Hosted web verifier (Next.js) | runs at `verify.modelactionprotocol.org` |
+| `examples/tools-stripe/` | Reference tool integration | — |
+| `scripts/generate-fixtures.ts` | Regenerates the v0.1 conformance fixtures (run once at freeze) | — |
+
+```bash
+# install TS workspaces (core + cli + verifier)
+npm install
+
+# build core + cli
+npm run build && npm run build:cli
+
+# run the verifier locally on http://localhost:4040
+npm run dev:verifier
+```
+
+---
+
 ## The Problem
 
 AI agents are entering Phase 3: **autonomous execution.** They schedule reasoning, call tools, execute multi-step processes, and verify their own results — all without a human in the loop.
