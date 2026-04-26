@@ -161,7 +161,7 @@ pip install map-protocol
 pip install "map-protocol[anthropic,sqlite,postgres,fastapi]"
 ```
 
-**Requirements:** Python 3.10+. Current version: **0.1.0** (release candidate). See [`python/README.md`](python/README.md) and [`python/DESIGN.md`](python/DESIGN.md). Walkthrough: [`python/examples/quickstart.ipynb`](python/examples/quickstart.ipynb). HTTP demo: [`python/examples/fastapi_app/`](python/examples/fastapi_app/).
+**Requirements:** Python 3.10+. Current version: **0.1.0**. See [`python/README.md`](python/README.md) and [`python/DESIGN.md`](python/DESIGN.md). Walkthrough: [`python/examples/quickstart.ipynb`](python/examples/quickstart.ipynb). HTTP demo: [`python/examples/fastapi_app/`](python/examples/fastapi_app/).
 
 ### Specification
 
@@ -282,6 +282,89 @@ const audit = map.exportLedger();
 // 8. Verify chain integrity
 map.verifyIntegrity(); // → { valid: true }
 ```
+
+### Python — same scenario
+
+```python
+from map import Action, CriticResult, Map, rule_critic, verify_chain
+
+# Your state — a tiny "orders database" stand-in for a real backend.
+ORDERS: dict[str, dict] = {}
+
+def place_order(item_id: str, quantity: int) -> dict:
+    order_id = f"O-{item_id}-{quantity}-{len(ORDERS)}"
+    record = {"orderId": order_id, "item_id": item_id, "quantity": quantity, "status": "open"}
+    ORDERS[order_id] = record
+    return record
+
+def cancel_order(action: Action, output) -> dict:
+    ORDERS[output["orderId"]]["status"] = "cancelled"
+    return {"orderId": output["orderId"], "cancelled": True}
+
+# 1. Critic — flag any order over 100 units
+def disallow_huge(action, sb, sa):
+    if action.input.get("quantity", 0) > 100:
+        return CriticResult(verdict="FLAGGED", reason="quantity over 100 needs approval")
+    return None
+
+# 2. Wire up MAP with critic + reverser
+m = Map()
+m.set_critic(rule_critic([disallow_huge]))
+decorated = m.reversible(reverser=cancel_order)(place_order)
+
+# 3. Execute — every call is a verifiable ledger entry
+output = decorated(item_id="SKU-A", quantity=2)
+entry = m.execute(Action(tool="place_order", input={"item_id": "SKU-A", "quantity": 2}, output=output))
+# → entry.critic.verdict == "PASS"
+
+# 4. Roll back — reverser fires, world state flips
+m.rollback_to(entry.id)
+assert ORDERS["O-SKU-A-2-0"]["status"] == "cancelled"
+
+# 5. Audit export + chain verification
+chain = [e.model_dump(by_alias=True, exclude_none=True) for e in m.get_entries()]
+assert verify_chain(chain) == {"valid": True}
+```
+
+For a full narrated walkthrough — including LearningEngine, persistent stores, and the Anthropic SDK integration — see [`python/examples/quickstart.ipynb`](python/examples/quickstart.ipynb). For an HTTP service template, see [`python/examples/fastapi_app/`](python/examples/fastapi_app/).
+
+---
+
+## Cross-language conformance
+
+MAP's claim isn't "we have a TypeScript library and a Python library." It's that **the wire format is the spec, both implementations conform, and ledgers are byte-identical across them**. The proof is in [`spec/SPEC.md` §6.4](spec/SPEC.md) — a worked example with a hand-computed SHA-256 that an automated test on each side asserts equality against.
+
+```typescript
+// TypeScript — Open Source/src/snapshot.ts
+import { computeEntryHash, sha256, serializeState } from "@model-action-protocol/core";
+
+const stateHash = sha256(serializeState(null));
+const entryHash = computeEntryHash(
+  0,
+  { tool: "ping", input: {}, output: "pong" },
+  stateHash, stateHash,
+  "0".repeat(64),
+  { verdict: "PASS", reason: "ok" }
+);
+// → "25d29bc25a183ebdb29b70b6a03ed2ad8d31033d1fb6347f656b21d7e9efb650"
+```
+
+```python
+# Python — same inputs, same output, byte-identical
+from map import GENESIS_HASH, compute_entry_hash, state_hash
+
+null_hash = state_hash(None)
+entry_hash = compute_entry_hash(
+    sequence=0,
+    action={"tool": "ping", "input": {}, "output": "pong"},
+    state_before=null_hash, state_after=null_hash,
+    parent_hash=GENESIS_HASH,
+    critic={"verdict": "PASS", "reason": "ok"},
+)
+# → "25d29bc25a183ebdb29b70b6a03ed2ad8d31033d1fb6347f656b21d7e9efb650"
+```
+
+Six frozen v0.1 fixtures (in [`spec/fixtures/v0.1/`](spec/fixtures/v0.1/)) cover the cases that historically break cross-language hash protocols: unicode (NFC vs NFD), deep nesting, empty payloads, large payloads, integer-valued floats (RFC 8785 §3.2.2.3 — JS's `JSON.stringify(1.0)` is `"1"`, Python's default `json.dumps(1.0)` is `"1.0"`; we bridge it). Both impls verify all six, and a ledger written in either language verifies in the other.
 
 ---
 
@@ -602,10 +685,20 @@ The strategy:
 ## Testing
 
 ```bash
+# TypeScript (146 tests)
 npm test
+npm run test:fixtures                    # spec/fixtures/v0.1/ conformance
+npm run test:python-output-conformance   # TS verifies Python-written ledgers
+
+# Python (108 tests + 3 skipped on missing env vars)
+cd python
+pip install -e ".[dev]"
+pytest                                   # everything except gated suites
+pytest -m postgres                       # requires DB_HOST
+pytest -m live_api                       # requires ANTHROPIC_API_KEY
 ```
 
-60+ tests covering: ledger chaining, tamper detection, critic integration (PASS/CORRECTED/FLAGGED), auto-correction, ESCALATE execution gating, RESTORE capture/restore lifecycle, state rollback, provenance of undo, audit export, event emission, sequence execution, tiered critic routing, custom risk classifiers, learning engine (rule extraction, fine-tuning export, agent memory), tool builders, serialization edge cases, and chain verification.
+**254 tests across both implementations** cover: ledger chaining and tamper detection, hash-chain verification, critic integration (PASS/CORRECTED/FLAGGED), auto-correction, RESTORE/COMPENSATE/ESCALATE reversal lifecycle, atomic stop-on-failure rollback semantics, audit export, event emission, sequence execution, tiered critic routing, custom risk classifiers, LearningEngine pattern fingerprints, tool builders / decorators, JCS canonicalization edge cases (unicode NFC vs NFD, integer-valued floats, deep nesting, empty/large payloads), cross-language conformance both directions, and SDK integration with mocked + live Anthropic clients.
 
 ---
 
