@@ -1,0 +1,46 @@
+{
+  "name": "@model-action-protocol/cli",
+  "version": "0.1.0",
+  "description": "MAP CLI — verify ledgers, wrap MCP servers, and inspect agent provenance from the command line.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "map": "./bin/map.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "verify": "node bin/map.js verify"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "provenance",
+    "verifier",
+    "map-protocol",
+    "cli"
+  ],
+  "author": "deadpxl <neil@deadpxl.studio>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeadpxlStudio/ModelActionProtocol.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/DeadpxlStudio/ModelActionProtocol/tree/main/packages/cli",
+  "dependencies": {
+    "@model-action-protocol/core": "file:../.."
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
