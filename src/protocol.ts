@@ -255,8 +255,6 @@ export interface MAPConfig {
   autoCorrect?: boolean;
   /** Whether to pause on FLAGGED verdicts (default: true) */
   pauseOnFlag?: boolean;
-  /** Custom state serializer (default: JSON.stringify) */
-  serializeState?: (state: unknown) => string;
   /** Lifecycle tags for cost attribution/tracking */
   tags?: string[];
   /** Optional persistence adapter (SQLite, Postgres, etc) */

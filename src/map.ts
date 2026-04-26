@@ -36,10 +36,7 @@ export class MAP {
   constructor(config: MAPConfig, critic: CriticFunction) {
     this.config = config;
     this.critic = critic;
-    this.ledger = new Ledger({
-      serializeState: config.serializeState,
-      store: config.store,
-    });
+    this.ledger = new Ledger({ store: config.store });
   }
 
   /**

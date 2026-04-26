@@ -25,14 +25,9 @@ import { LedgerStore } from "./store.js";
 export class Ledger {
   private entries: LedgerEntry[] = [];
   private listeners: MAPEventHandler[] = [];
-  private serializeState?: (state: unknown) => string;
   private store?: LedgerStore;
 
-  constructor(options?: { 
-    serializeState?: (state: unknown) => string,
-    store?: LedgerStore 
-  }) {
-    this.serializeState = options?.serializeState;
+  constructor(options?: { store?: LedgerStore }) {
     this.store = options?.store;
   }
 
@@ -40,10 +35,7 @@ export class Ledger {
    * Static factory to create and initialize a ledger from a persistent store.
    * This is the recommended way to instantiate a ledger when using a store.
    */
-  static async load(options?: { 
-    serializeState?: (state: unknown) => string,
-    store?: LedgerStore 
-  }): Promise<Ledger> {
+  static async load(options?: { store?: LedgerStore }): Promise<Ledger> {
     const ledger = new Ledger(options);
     await ledger.init();
     return ledger;
@@ -104,8 +96,8 @@ export class Ledger {
     const parentHash =
       sequence > 0 ? this.entries[sequence - 1].hash : "0".repeat(64);
 
-    const before = captureSnapshot(stateBefore, this.serializeState);
-    const after = captureSnapshot(stateAfter, this.serializeState);
+    const before = captureSnapshot(stateBefore);
+    const after = captureSnapshot(stateAfter);
 
     const hash = computeEntryHash(
       sequence,
