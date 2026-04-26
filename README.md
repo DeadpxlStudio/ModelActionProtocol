@@ -1,14 +1,15 @@
-# @model-action-protocol/core
+# Model Action Protocol (MAP)
 
-**MAP (Model Action Protocol) — Cryptographic provenance, self-healing, and state rollback for autonomous AI agents.**
+**Cryptographic provenance, self-healing critique, and state rollback for autonomous AI agents.**
 
 MCP gave Claude the hands. MAP gives Claude the receipt.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/Tests-60%2B-brightgreen.svg)]()
+[![Spec v0.1](https://img.shields.io/badge/spec-v0.1.0%20frozen-blue.svg)](spec/SPEC.md)
+[![Tests](https://img.shields.io/badge/tests-254%20passing-brightgreen.svg)]()
+[![JCS RFC 8785](https://img.shields.io/badge/canonicalization-JCS%20RFC%208785-purple.svg)](https://www.rfc-editor.org/rfc/rfc8785)
 
-> **Building v0.2:** Solving distributed cross-API rollbacks. [Join the RFC](https://github.com/DeadpxlStudio/ModelActionProtocol/issues/1) to help architect the universal undo.
+> **MAP v0.1 spec is frozen.** Wire format, JCS canonicalization, and conformance fixtures are immutable at [spec v0.1.0](spec/SPEC.md). Two reference implementations conform: TypeScript (`@model-action-protocol/core`, npm) and Python (`map-protocol`, PyPI). A ledger written in either language verifies byte-identical in the other — pinned by 6 frozen conformance fixtures.
 
 ---
 
@@ -144,11 +145,27 @@ MCP defines how agents read the world. MAP defines how agents safely write to it
 
 ## Installation
 
+### TypeScript
+
 ```bash
 npm install @model-action-protocol/core
 ```
 
-**Requirements:** Node.js 20+, TypeScript 5.7+
+**Requirements:** Node.js 20+, TypeScript 5.7+. Current version: **0.2.0** (breaking change from 0.1.x — JCS canonicalization adopted; see [CHANGELOG](CHANGELOG.md)).
+
+### Python
+
+```bash
+pip install map-protocol
+# or with extras:
+pip install "map-protocol[anthropic,sqlite,postgres,fastapi]"
+```
+
+**Requirements:** Python 3.10+. Current version: **0.1.0** (release candidate). See [`python/README.md`](python/README.md) and [`python/DESIGN.md`](python/DESIGN.md). Walkthrough: [`python/examples/quickstart.ipynb`](python/examples/quickstart.ipynb). HTTP demo: [`python/examples/fastapi_app/`](python/examples/fastapi_app/).
+
+### Specification
+
+The wire format is defined in [`spec/SPEC.md`](spec/SPEC.md). Both implementations conform. Conformance fixtures live at [`spec/fixtures/v0.1/`](spec/fixtures/v0.1/) — immutable, version-bumped only via a new spec release.
 
 ---
 
