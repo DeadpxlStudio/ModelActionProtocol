@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "map-protocol"
-version = "0.1.0"
+name = "model-action-protocol"
+version = "0.1.1"
 description = "MAP (Model Action Protocol) — verifiable provenance, self-healing critique, and state rollback for autonomous AI agents"
 readme = "README.md"
 license = "MIT"
@@ -12,7 +12,7 @@ requires-python = ">=3.10,<3.15"
 authors = [
   { name = "deadpxl", email = "deadpxlstudio@gmail.com" },
 ]
-keywords = ["ai", "agents", "provenance", "rollback", "trust", "safety", "map-protocol"]
+keywords = ["ai", "agents", "provenance", "rollback", "trust", "safety", "model-action-protocol"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",

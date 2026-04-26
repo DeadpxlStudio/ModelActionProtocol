@@ -7,7 +7,7 @@ like in a backend context.
 
 Run::
 
-    pip install "map-protocol[fastapi]"
+    pip install "model-action-protocol[fastapi]"
     uvicorn main:app --reload
 
 Endpoints::

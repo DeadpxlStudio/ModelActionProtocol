@@ -9,7 +9,7 @@ SERIALIZABLE isolation for writes, retry on serialization failures.
 
 Requires the ``[postgres]`` extra::
 
-    pip install "map-protocol[postgres]"
+    pip install "model-action-protocol[postgres]"
 """
 
 from __future__ import annotations
@@ -64,7 +64,7 @@ class PostgresLedgerStore:
         if psycopg is None:
             raise ImportError(
                 "psycopg is not installed. "
-                "Install with: pip install 'map-protocol[postgres]'"
+                "Install with: pip install 'model-action-protocol[postgres]'"
             ) from _IMPORT_ERROR
         if not session_id:
             raise ValueError("session_id must be a non-empty string")

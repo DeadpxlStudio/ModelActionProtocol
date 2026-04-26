@@ -129,7 +129,7 @@ def test_sqlite_status_update_persists() -> None:
 
 postgres = pytest.importorskip(
     "psycopg",
-    reason="psycopg not installed; install map-protocol[postgres] to run",
+    reason="psycopg not installed; install model-action-protocol[postgres] to run",
 )
 
 

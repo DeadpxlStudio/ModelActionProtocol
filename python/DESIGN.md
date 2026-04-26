@@ -177,7 +177,7 @@ Logger names: `map`, `map.ledger`, `map.critic`, `map.stores.postgres`, `map.int
 - `[fastapi]`: `fastapi`, `uvicorn`
 - `[dev]`: `pytest`, `hypothesis`, `mypy`, `pyright`, `ruff`
 
-**Why:** Notebook users `pip install map-protocol` and get a clean environment. Postgres, FastAPI, and Anthropic SDK are opt-in. Vendoring JCS avoids inheriting whatever transitive deps a `pyjcs` package brings — JCS is small enough to own.
+**Why:** Notebook users `pip install model-action-protocol` and get a clean environment. Postgres, FastAPI, and Anthropic SDK are opt-in. Vendoring JCS avoids inheriting whatever transitive deps a `pyjcs` package brings — JCS is small enough to own.
 
 ---
 

@@ -25,7 +25,7 @@ import pytest
 # clean on environments without the [anthropic] extra.
 anthropic = pytest.importorskip(
     "anthropic",
-    reason="anthropic SDK not installed; install map-protocol[anthropic] to run",
+    reason="anthropic SDK not installed; install model-action-protocol[anthropic] to run",
 )
 
 from map import (  # noqa: E402

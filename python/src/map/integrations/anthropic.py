@@ -10,7 +10,7 @@ Researchers compose this with their own agent loop. We don't own the loop.
 
 Requires the ``[anthropic]`` extra::
 
-    pip install "map-protocol[anthropic]"
+    pip install "model-action-protocol[anthropic]"
 """
 
 from __future__ import annotations

@@ -38,7 +38,7 @@
     "rollback",
     "trust",
     "safety",
-    "map-protocol"
+    "model-action-protocol"
   ],
   "author": "deadpxl <deadpxlstudio@gmail.com>",
   "license": "MIT",

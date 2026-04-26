@@ -1,8 +1,18 @@
 # Changelog
 
+## v0.1.1 (Python reference implementation) — 2026-04-25
+
+Pre-publish package rename. No code changes from v0.1.0; same surface, same wire format, same conformance.
+
+- **PyPI distribution name: `model-action-protocol`** (was `map-protocol`). The original name was already taken by an unrelated project on PyPI ("MAP v1: deterministic identifiers for structured descriptors"). The new name matches the npm scope `@model-action-protocol/core` for symmetry — both packages are now `model-action-protocol`.
+- **Import name unchanged: `import map`.** Only the distribution name (the string after `pip install`) moved.
+- All 13 references swept across README, docstrings, examples, tests, plan, and design doc.
+
+The v0.1.0 git tag remains on `b6d32e4` for historical record but should not be installed from. Use v0.1.1 for any actual install.
+
 ## v0.1.0 (Python reference implementation) — 2026-04-25
 
-First feature-complete release of `map-protocol` on PyPI. Conforms to MAP spec v0.1.0.
+First feature-complete release of `model-action-protocol` on PyPI. Conforms to MAP spec v0.1.0.
 
 **Includes everything from rc1 through rc3** plus the demo artifacts:
 
@@ -19,7 +29,7 @@ First feature-complete release of `map-protocol` on PyPI. Conforms to MAP spec v
 - Wheel built clean; `twine check` passes; clean-venv install works on Python 3.14.
 - `npm publish --dry-run` clean for the migrated `@model-action-protocol/core@0.2.0`.
 
-**Distribution:** `pip install map-protocol`. Source: [`python/`](python/). Spec: [`spec/SPEC.md`](spec/SPEC.md).
+**Distribution:** `pip install model-action-protocol`. Source: [`python/`](python/). Spec: [`spec/SPEC.md`](spec/SPEC.md).
 
 ## v0.1.0-rc3 (Python reference implementation) — 2026-04-25
 

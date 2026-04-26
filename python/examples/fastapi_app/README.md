@@ -7,7 +7,7 @@ This is the same scenario that `tests/test_sdk_integration.py` exercises, lifted
 ## Run
 
 ```bash
-pip install "map-protocol[fastapi]"
+pip install "model-action-protocol[fastapi]"
 cd python/examples/fastapi_app
 uvicorn main:app --reload
 ```
