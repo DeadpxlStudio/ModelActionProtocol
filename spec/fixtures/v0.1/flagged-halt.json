@@ -1,0 +1,102 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "7b9e30d9-b78f-420a-8d58-b28e7309ef1f",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "logTransaction",
+        "input": {
+          "amount": 500
+        },
+        "output": {
+          "logged": true
+        }
+      },
+      "stateBefore": "a89fcc616f44167da1fc28334a460884c47bef1af37c33ea8575b0590e8dff0b",
+      "stateAfter": "4741ee7256b8a169cdeb0bcc080fb09105e1a1e5f9f4fd7cd556a3ea4dc12bc2",
+      "snapshots": {
+        "before": {
+          "account": {
+            "id": "A1",
+            "status": "open"
+          }
+        },
+        "after": {
+          "account": {
+            "id": "A1",
+            "status": "open"
+          },
+          "transactions": [
+            {
+              "amount": 500
+            }
+          ]
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "0b4f9b593c9601727a04408a170f9e9030ea60fd7295aca1ac7fabf8d2677609",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "transaction within normal range"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "3749a937-1800-4a87-80b0-747d2afd6077",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "wireTransfer",
+        "input": {
+          "amount": 100000,
+          "to": "external"
+        },
+        "output": null,
+        "reversalStrategy": "ESCALATE"
+      },
+      "stateBefore": "4741ee7256b8a169cdeb0bcc080fb09105e1a1e5f9f4fd7cd556a3ea4dc12bc2",
+      "stateAfter": "4741ee7256b8a169cdeb0bcc080fb09105e1a1e5f9f4fd7cd556a3ea4dc12bc2",
+      "snapshots": {
+        "before": {
+          "account": {
+            "id": "A1",
+            "status": "open"
+          },
+          "transactions": [
+            {
+              "amount": 500
+            }
+          ]
+        },
+        "after": {
+          "account": {
+            "id": "A1",
+            "status": "open"
+          },
+          "transactions": [
+            {
+              "amount": 500
+            }
+          ]
+        }
+      },
+      "parentHash": "0b4f9b593c9601727a04408a170f9e9030ea60fd7295aca1ac7fabf8d2677609",
+      "hash": "38d19017e2d5c575152487023e74e9f1479ca6c8c0f7b99c760409d12a345152",
+      "critic": {
+        "verdict": "FLAGGED",
+        "reason": "wire transfer over $50k requires human approval"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 2,
+    "committed": 2,
+    "rolledBack": 0,
+    "corrections": 0,
+    "flags": 1
+  }
+}

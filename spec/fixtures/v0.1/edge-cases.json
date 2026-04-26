@@ -1,0 +1,2173 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "e377fd6b-e7f6-4676-8190-60d1d5558572",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "logCustomer",
+        "input": {
+          "name": "café",
+          "emoji": "🥐",
+          "chinese": "你好"
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "c144af09ee7603156af76eec2bc753bd38831fd28f458d2c331c439a6bf9d065",
+      "stateAfter": "adc6db8118e945daabf5c02eafc976277804a0b5b7a4cf0b6dfb0a6fcc080180",
+      "snapshots": {
+        "before": {
+          "customers": []
+        },
+        "after": {
+          "customers": [
+            {
+              "name": "café"
+            }
+          ]
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "a5bb67d362dc6d67c4602dbcdd0b543fd500333f1b2a485eb0b2c8be4047a1b0",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "unicode preserved through canonicalization"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "6633f567-eff0-40ff-849e-c4668cf880af",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "noop",
+        "input": {},
+        "output": {}
+      },
+      "stateBefore": "adc6db8118e945daabf5c02eafc976277804a0b5b7a4cf0b6dfb0a6fcc080180",
+      "stateAfter": "adc6db8118e945daabf5c02eafc976277804a0b5b7a4cf0b6dfb0a6fcc080180",
+      "snapshots": {
+        "before": {
+          "customers": [
+            {
+              "name": "café"
+            }
+          ]
+        },
+        "after": {
+          "customers": [
+            {
+              "name": "café"
+            }
+          ]
+        }
+      },
+      "parentHash": "a5bb67d362dc6d67c4602dbcdd0b543fd500333f1b2a485eb0b2c8be4047a1b0",
+      "hash": "426be9404f08570b389fc7bb102631e2a22e6bae823ca958776598718401ed20",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "no-op"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "25b7ba6c-0dba-495d-8297-a72aaead028c",
+      "sequence": 2,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "deepUpdate",
+        "input": {
+          "path": "a.b.c.d.e.f.value",
+          "to": 1
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "ef5b2beef2847118e24f46fbdc01d341559b027781ab54a63fdf39e0b64f5870",
+      "stateAfter": "63c32cf088807839511366a0d0578b7c4e8671539d00d9849743522112c705c3",
+      "snapshots": {
+        "before": {
+          "a": {
+            "b": {
+              "c": {
+                "d": {
+                  "e": {
+                    "f": {
+                      "value": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "after": {
+          "a": {
+            "b": {
+              "c": {
+                "d": {
+                  "e": {
+                    "f": {
+                      "value": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parentHash": "426be9404f08570b389fc7bb102631e2a22e6bae823ca958776598718401ed20",
+      "hash": "aa6dc7e25a417daa7e50f1603ce892b14db8104985d6f210dabd10c3ed0b34d9",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "deep nesting preserved"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "2531b44f-457c-4fe5-8da9-6eba8d4e3501",
+      "sequence": 3,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "bulkImport",
+        "input": {
+          "count": 200
+        },
+        "output": {
+          "imported": 200
+        }
+      },
+      "stateBefore": "eef46741adfc3a9f76294d3b78f37a45f113092ac9d44ee77c7a038a88ff09a1",
+      "stateAfter": "5ea84c369db70333e9f8418fbd667bcf1589306b00ad26d70e89b0886be8ec15",
+      "snapshots": {
+        "before": {
+          "items": []
+        },
+        "after": {
+          "items": [
+            {
+              "id": "item-0000",
+              "label": "Description for item 0",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 0
+            },
+            {
+              "id": "item-0001",
+              "label": "Description for item 1",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 0.5
+            },
+            {
+              "id": "item-0002",
+              "label": "Description for item 2",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 1
+            },
+            {
+              "id": "item-0003",
+              "label": "Description for item 3",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 1.5
+            },
+            {
+              "id": "item-0004",
+              "label": "Description for item 4",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 2
+            },
+            {
+              "id": "item-0005",
+              "label": "Description for item 5",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 2.5
+            },
+            {
+              "id": "item-0006",
+              "label": "Description for item 6",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 3
+            },
+            {
+              "id": "item-0007",
+              "label": "Description for item 7",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 3.5
+            },
+            {
+              "id": "item-0008",
+              "label": "Description for item 8",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 4
+            },
+            {
+              "id": "item-0009",
+              "label": "Description for item 9",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 4.5
+            },
+            {
+              "id": "item-0010",
+              "label": "Description for item 10",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 5
+            },
+            {
+              "id": "item-0011",
+              "label": "Description for item 11",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 5.5
+            },
+            {
+              "id": "item-0012",
+              "label": "Description for item 12",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 6
+            },
+            {
+              "id": "item-0013",
+              "label": "Description for item 13",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 6.5
+            },
+            {
+              "id": "item-0014",
+              "label": "Description for item 14",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 7
+            },
+            {
+              "id": "item-0015",
+              "label": "Description for item 15",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 7.5
+            },
+            {
+              "id": "item-0016",
+              "label": "Description for item 16",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 8
+            },
+            {
+              "id": "item-0017",
+              "label": "Description for item 17",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 8.5
+            },
+            {
+              "id": "item-0018",
+              "label": "Description for item 18",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 9
+            },
+            {
+              "id": "item-0019",
+              "label": "Description for item 19",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 9.5
+            },
+            {
+              "id": "item-0020",
+              "label": "Description for item 20",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 10
+            },
+            {
+              "id": "item-0021",
+              "label": "Description for item 21",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 10.5
+            },
+            {
+              "id": "item-0022",
+              "label": "Description for item 22",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 11
+            },
+            {
+              "id": "item-0023",
+              "label": "Description for item 23",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 11.5
+            },
+            {
+              "id": "item-0024",
+              "label": "Description for item 24",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 12
+            },
+            {
+              "id": "item-0025",
+              "label": "Description for item 25",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 12.5
+            },
+            {
+              "id": "item-0026",
+              "label": "Description for item 26",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 13
+            },
+            {
+              "id": "item-0027",
+              "label": "Description for item 27",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 13.5
+            },
+            {
+              "id": "item-0028",
+              "label": "Description for item 28",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 14
+            },
+            {
+              "id": "item-0029",
+              "label": "Description for item 29",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 14.5
+            },
+            {
+              "id": "item-0030",
+              "label": "Description for item 30",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 15
+            },
+            {
+              "id": "item-0031",
+              "label": "Description for item 31",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 15.5
+            },
+            {
+              "id": "item-0032",
+              "label": "Description for item 32",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 16
+            },
+            {
+              "id": "item-0033",
+              "label": "Description for item 33",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 16.5
+            },
+            {
+              "id": "item-0034",
+              "label": "Description for item 34",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 17
+            },
+            {
+              "id": "item-0035",
+              "label": "Description for item 35",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 17.5
+            },
+            {
+              "id": "item-0036",
+              "label": "Description for item 36",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 18
+            },
+            {
+              "id": "item-0037",
+              "label": "Description for item 37",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 18.5
+            },
+            {
+              "id": "item-0038",
+              "label": "Description for item 38",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 19
+            },
+            {
+              "id": "item-0039",
+              "label": "Description for item 39",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 19.5
+            },
+            {
+              "id": "item-0040",
+              "label": "Description for item 40",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 20
+            },
+            {
+              "id": "item-0041",
+              "label": "Description for item 41",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 20.5
+            },
+            {
+              "id": "item-0042",
+              "label": "Description for item 42",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 21
+            },
+            {
+              "id": "item-0043",
+              "label": "Description for item 43",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 21.5
+            },
+            {
+              "id": "item-0044",
+              "label": "Description for item 44",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 22
+            },
+            {
+              "id": "item-0045",
+              "label": "Description for item 45",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 22.5
+            },
+            {
+              "id": "item-0046",
+              "label": "Description for item 46",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 23
+            },
+            {
+              "id": "item-0047",
+              "label": "Description for item 47",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 23.5
+            },
+            {
+              "id": "item-0048",
+              "label": "Description for item 48",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 24
+            },
+            {
+              "id": "item-0049",
+              "label": "Description for item 49",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 24.5
+            },
+            {
+              "id": "item-0050",
+              "label": "Description for item 50",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 25
+            },
+            {
+              "id": "item-0051",
+              "label": "Description for item 51",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 25.5
+            },
+            {
+              "id": "item-0052",
+              "label": "Description for item 52",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 26
+            },
+            {
+              "id": "item-0053",
+              "label": "Description for item 53",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 26.5
+            },
+            {
+              "id": "item-0054",
+              "label": "Description for item 54",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 27
+            },
+            {
+              "id": "item-0055",
+              "label": "Description for item 55",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 27.5
+            },
+            {
+              "id": "item-0056",
+              "label": "Description for item 56",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 28
+            },
+            {
+              "id": "item-0057",
+              "label": "Description for item 57",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 28.5
+            },
+            {
+              "id": "item-0058",
+              "label": "Description for item 58",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 29
+            },
+            {
+              "id": "item-0059",
+              "label": "Description for item 59",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 29.5
+            },
+            {
+              "id": "item-0060",
+              "label": "Description for item 60",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 30
+            },
+            {
+              "id": "item-0061",
+              "label": "Description for item 61",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 30.5
+            },
+            {
+              "id": "item-0062",
+              "label": "Description for item 62",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 31
+            },
+            {
+              "id": "item-0063",
+              "label": "Description for item 63",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 31.5
+            },
+            {
+              "id": "item-0064",
+              "label": "Description for item 64",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 32
+            },
+            {
+              "id": "item-0065",
+              "label": "Description for item 65",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 32.5
+            },
+            {
+              "id": "item-0066",
+              "label": "Description for item 66",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 33
+            },
+            {
+              "id": "item-0067",
+              "label": "Description for item 67",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 33.5
+            },
+            {
+              "id": "item-0068",
+              "label": "Description for item 68",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 34
+            },
+            {
+              "id": "item-0069",
+              "label": "Description for item 69",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 34.5
+            },
+            {
+              "id": "item-0070",
+              "label": "Description for item 70",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 35
+            },
+            {
+              "id": "item-0071",
+              "label": "Description for item 71",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 35.5
+            },
+            {
+              "id": "item-0072",
+              "label": "Description for item 72",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 36
+            },
+            {
+              "id": "item-0073",
+              "label": "Description for item 73",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 36.5
+            },
+            {
+              "id": "item-0074",
+              "label": "Description for item 74",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 37
+            },
+            {
+              "id": "item-0075",
+              "label": "Description for item 75",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 37.5
+            },
+            {
+              "id": "item-0076",
+              "label": "Description for item 76",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 38
+            },
+            {
+              "id": "item-0077",
+              "label": "Description for item 77",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 38.5
+            },
+            {
+              "id": "item-0078",
+              "label": "Description for item 78",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 39
+            },
+            {
+              "id": "item-0079",
+              "label": "Description for item 79",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 39.5
+            },
+            {
+              "id": "item-0080",
+              "label": "Description for item 80",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 40
+            },
+            {
+              "id": "item-0081",
+              "label": "Description for item 81",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 40.5
+            },
+            {
+              "id": "item-0082",
+              "label": "Description for item 82",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 41
+            },
+            {
+              "id": "item-0083",
+              "label": "Description for item 83",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 41.5
+            },
+            {
+              "id": "item-0084",
+              "label": "Description for item 84",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 42
+            },
+            {
+              "id": "item-0085",
+              "label": "Description for item 85",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 42.5
+            },
+            {
+              "id": "item-0086",
+              "label": "Description for item 86",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 43
+            },
+            {
+              "id": "item-0087",
+              "label": "Description for item 87",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 43.5
+            },
+            {
+              "id": "item-0088",
+              "label": "Description for item 88",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 44
+            },
+            {
+              "id": "item-0089",
+              "label": "Description for item 89",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 44.5
+            },
+            {
+              "id": "item-0090",
+              "label": "Description for item 90",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 45
+            },
+            {
+              "id": "item-0091",
+              "label": "Description for item 91",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 45.5
+            },
+            {
+              "id": "item-0092",
+              "label": "Description for item 92",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 46
+            },
+            {
+              "id": "item-0093",
+              "label": "Description for item 93",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 46.5
+            },
+            {
+              "id": "item-0094",
+              "label": "Description for item 94",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 47
+            },
+            {
+              "id": "item-0095",
+              "label": "Description for item 95",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 47.5
+            },
+            {
+              "id": "item-0096",
+              "label": "Description for item 96",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 48
+            },
+            {
+              "id": "item-0097",
+              "label": "Description for item 97",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 48.5
+            },
+            {
+              "id": "item-0098",
+              "label": "Description for item 98",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 49
+            },
+            {
+              "id": "item-0099",
+              "label": "Description for item 99",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 49.5
+            },
+            {
+              "id": "item-0100",
+              "label": "Description for item 100",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 50
+            },
+            {
+              "id": "item-0101",
+              "label": "Description for item 101",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 50.5
+            },
+            {
+              "id": "item-0102",
+              "label": "Description for item 102",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 51
+            },
+            {
+              "id": "item-0103",
+              "label": "Description for item 103",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 51.5
+            },
+            {
+              "id": "item-0104",
+              "label": "Description for item 104",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 52
+            },
+            {
+              "id": "item-0105",
+              "label": "Description for item 105",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 52.5
+            },
+            {
+              "id": "item-0106",
+              "label": "Description for item 106",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 53
+            },
+            {
+              "id": "item-0107",
+              "label": "Description for item 107",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 53.5
+            },
+            {
+              "id": "item-0108",
+              "label": "Description for item 108",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 54
+            },
+            {
+              "id": "item-0109",
+              "label": "Description for item 109",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 54.5
+            },
+            {
+              "id": "item-0110",
+              "label": "Description for item 110",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 55
+            },
+            {
+              "id": "item-0111",
+              "label": "Description for item 111",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 55.5
+            },
+            {
+              "id": "item-0112",
+              "label": "Description for item 112",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 56
+            },
+            {
+              "id": "item-0113",
+              "label": "Description for item 113",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 56.5
+            },
+            {
+              "id": "item-0114",
+              "label": "Description for item 114",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 57
+            },
+            {
+              "id": "item-0115",
+              "label": "Description for item 115",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 57.5
+            },
+            {
+              "id": "item-0116",
+              "label": "Description for item 116",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 58
+            },
+            {
+              "id": "item-0117",
+              "label": "Description for item 117",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 58.5
+            },
+            {
+              "id": "item-0118",
+              "label": "Description for item 118",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 59
+            },
+            {
+              "id": "item-0119",
+              "label": "Description for item 119",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 59.5
+            },
+            {
+              "id": "item-0120",
+              "label": "Description for item 120",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 60
+            },
+            {
+              "id": "item-0121",
+              "label": "Description for item 121",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 60.5
+            },
+            {
+              "id": "item-0122",
+              "label": "Description for item 122",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 61
+            },
+            {
+              "id": "item-0123",
+              "label": "Description for item 123",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 61.5
+            },
+            {
+              "id": "item-0124",
+              "label": "Description for item 124",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 62
+            },
+            {
+              "id": "item-0125",
+              "label": "Description for item 125",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 62.5
+            },
+            {
+              "id": "item-0126",
+              "label": "Description for item 126",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 63
+            },
+            {
+              "id": "item-0127",
+              "label": "Description for item 127",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 63.5
+            },
+            {
+              "id": "item-0128",
+              "label": "Description for item 128",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 64
+            },
+            {
+              "id": "item-0129",
+              "label": "Description for item 129",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 64.5
+            },
+            {
+              "id": "item-0130",
+              "label": "Description for item 130",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 65
+            },
+            {
+              "id": "item-0131",
+              "label": "Description for item 131",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 65.5
+            },
+            {
+              "id": "item-0132",
+              "label": "Description for item 132",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 66
+            },
+            {
+              "id": "item-0133",
+              "label": "Description for item 133",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 66.5
+            },
+            {
+              "id": "item-0134",
+              "label": "Description for item 134",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 67
+            },
+            {
+              "id": "item-0135",
+              "label": "Description for item 135",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 67.5
+            },
+            {
+              "id": "item-0136",
+              "label": "Description for item 136",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 68
+            },
+            {
+              "id": "item-0137",
+              "label": "Description for item 137",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 68.5
+            },
+            {
+              "id": "item-0138",
+              "label": "Description for item 138",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 69
+            },
+            {
+              "id": "item-0139",
+              "label": "Description for item 139",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 69.5
+            },
+            {
+              "id": "item-0140",
+              "label": "Description for item 140",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 70
+            },
+            {
+              "id": "item-0141",
+              "label": "Description for item 141",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 70.5
+            },
+            {
+              "id": "item-0142",
+              "label": "Description for item 142",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 71
+            },
+            {
+              "id": "item-0143",
+              "label": "Description for item 143",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 71.5
+            },
+            {
+              "id": "item-0144",
+              "label": "Description for item 144",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 72
+            },
+            {
+              "id": "item-0145",
+              "label": "Description for item 145",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 72.5
+            },
+            {
+              "id": "item-0146",
+              "label": "Description for item 146",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 73
+            },
+            {
+              "id": "item-0147",
+              "label": "Description for item 147",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 73.5
+            },
+            {
+              "id": "item-0148",
+              "label": "Description for item 148",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 74
+            },
+            {
+              "id": "item-0149",
+              "label": "Description for item 149",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 74.5
+            },
+            {
+              "id": "item-0150",
+              "label": "Description for item 150",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 75
+            },
+            {
+              "id": "item-0151",
+              "label": "Description for item 151",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 75.5
+            },
+            {
+              "id": "item-0152",
+              "label": "Description for item 152",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 76
+            },
+            {
+              "id": "item-0153",
+              "label": "Description for item 153",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 76.5
+            },
+            {
+              "id": "item-0154",
+              "label": "Description for item 154",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 77
+            },
+            {
+              "id": "item-0155",
+              "label": "Description for item 155",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 77.5
+            },
+            {
+              "id": "item-0156",
+              "label": "Description for item 156",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 78
+            },
+            {
+              "id": "item-0157",
+              "label": "Description for item 157",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 78.5
+            },
+            {
+              "id": "item-0158",
+              "label": "Description for item 158",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 79
+            },
+            {
+              "id": "item-0159",
+              "label": "Description for item 159",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 79.5
+            },
+            {
+              "id": "item-0160",
+              "label": "Description for item 160",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 80
+            },
+            {
+              "id": "item-0161",
+              "label": "Description for item 161",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 80.5
+            },
+            {
+              "id": "item-0162",
+              "label": "Description for item 162",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 81
+            },
+            {
+              "id": "item-0163",
+              "label": "Description for item 163",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 81.5
+            },
+            {
+              "id": "item-0164",
+              "label": "Description for item 164",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 82
+            },
+            {
+              "id": "item-0165",
+              "label": "Description for item 165",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 82.5
+            },
+            {
+              "id": "item-0166",
+              "label": "Description for item 166",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 83
+            },
+            {
+              "id": "item-0167",
+              "label": "Description for item 167",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 83.5
+            },
+            {
+              "id": "item-0168",
+              "label": "Description for item 168",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 84
+            },
+            {
+              "id": "item-0169",
+              "label": "Description for item 169",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 84.5
+            },
+            {
+              "id": "item-0170",
+              "label": "Description for item 170",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 85
+            },
+            {
+              "id": "item-0171",
+              "label": "Description for item 171",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 85.5
+            },
+            {
+              "id": "item-0172",
+              "label": "Description for item 172",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 86
+            },
+            {
+              "id": "item-0173",
+              "label": "Description for item 173",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 86.5
+            },
+            {
+              "id": "item-0174",
+              "label": "Description for item 174",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 87
+            },
+            {
+              "id": "item-0175",
+              "label": "Description for item 175",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 87.5
+            },
+            {
+              "id": "item-0176",
+              "label": "Description for item 176",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 88
+            },
+            {
+              "id": "item-0177",
+              "label": "Description for item 177",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 88.5
+            },
+            {
+              "id": "item-0178",
+              "label": "Description for item 178",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 89
+            },
+            {
+              "id": "item-0179",
+              "label": "Description for item 179",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 89.5
+            },
+            {
+              "id": "item-0180",
+              "label": "Description for item 180",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 90
+            },
+            {
+              "id": "item-0181",
+              "label": "Description for item 181",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 90.5
+            },
+            {
+              "id": "item-0182",
+              "label": "Description for item 182",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 91
+            },
+            {
+              "id": "item-0183",
+              "label": "Description for item 183",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 91.5
+            },
+            {
+              "id": "item-0184",
+              "label": "Description for item 184",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 92
+            },
+            {
+              "id": "item-0185",
+              "label": "Description for item 185",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 92.5
+            },
+            {
+              "id": "item-0186",
+              "label": "Description for item 186",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 93
+            },
+            {
+              "id": "item-0187",
+              "label": "Description for item 187",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 93.5
+            },
+            {
+              "id": "item-0188",
+              "label": "Description for item 188",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 94
+            },
+            {
+              "id": "item-0189",
+              "label": "Description for item 189",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 94.5
+            },
+            {
+              "id": "item-0190",
+              "label": "Description for item 190",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 95
+            },
+            {
+              "id": "item-0191",
+              "label": "Description for item 191",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 95.5
+            },
+            {
+              "id": "item-0192",
+              "label": "Description for item 192",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 96
+            },
+            {
+              "id": "item-0193",
+              "label": "Description for item 193",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 96.5
+            },
+            {
+              "id": "item-0194",
+              "label": "Description for item 194",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 97
+            },
+            {
+              "id": "item-0195",
+              "label": "Description for item 195",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 97.5
+            },
+            {
+              "id": "item-0196",
+              "label": "Description for item 196",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 98
+            },
+            {
+              "id": "item-0197",
+              "label": "Description for item 197",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 98.5
+            },
+            {
+              "id": "item-0198",
+              "label": "Description for item 198",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 99
+            },
+            {
+              "id": "item-0199",
+              "label": "Description for item 199",
+              "tags": [
+                "alpha",
+                "beta",
+                "gamma"
+              ],
+              "score": 99.5
+            }
+          ]
+        }
+      },
+      "parentHash": "aa6dc7e25a417daa7e50f1603ce892b14db8104985d6f210dabd10c3ed0b34d9",
+      "hash": "178717913a4e072c264d8c49892b49f64545cc0e2a81f28c5af27bfecda67389",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "bulk import of 200 items"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 4,
+    "committed": 4,
+    "rolledBack": 0,
+    "corrections": 0,
+    "flags": 0
+  }
+}

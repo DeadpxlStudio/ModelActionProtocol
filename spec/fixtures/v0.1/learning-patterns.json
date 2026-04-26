@@ -1,0 +1,233 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "e1b52801-011a-4b20-804b-e4e2711c223f",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "createTicket",
+        "input": {
+          "title": "Issue 0"
+        },
+        "output": {
+          "id": "T-0"
+        }
+      },
+      "stateBefore": "ff499512157d046fea7b53ad25cbf775fe3d66caeb783a0dc436061a08a4a453",
+      "stateAfter": "fbe1890b7f029533ceb33745326ac051bb6527c7795a2fbe518279fa16c47203",
+      "snapshots": {
+        "before": {
+          "tickets": 0
+        },
+        "after": {
+          "tickets": 1
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "272e8cd743ba59636fbb3995388dfdf90d48f66ebf562fe8ff91ec586f272c39",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "ticket title missing project tag; auto-prefixed",
+        "correction": {
+          "tool": "createTicket",
+          "input": {
+            "title": "[OPS] Issue 0"
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "57e28769-5860-413b-8dc8-a57d845dca57",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "createTicket",
+        "input": {
+          "title": "Issue 1"
+        },
+        "output": {
+          "id": "T-1"
+        }
+      },
+      "stateBefore": "fbe1890b7f029533ceb33745326ac051bb6527c7795a2fbe518279fa16c47203",
+      "stateAfter": "6f6a76876c737a7041de71cfd4b11f8ed1560e12f0422b40a7dfeebfeb863b51",
+      "snapshots": {
+        "before": {
+          "tickets": 1
+        },
+        "after": {
+          "tickets": 2
+        }
+      },
+      "parentHash": "272e8cd743ba59636fbb3995388dfdf90d48f66ebf562fe8ff91ec586f272c39",
+      "hash": "4d5b502c1f8b317982a126951fb83e7f6c8fb3385ae3225c0b0a9a508cd1cfba",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "ticket title missing project tag; auto-prefixed",
+        "correction": {
+          "tool": "createTicket",
+          "input": {
+            "title": "[OPS] Issue 1"
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "0accebc2-8459-468d-83bb-427c708b128f",
+      "sequence": 2,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "createTicket",
+        "input": {
+          "title": "Issue 2"
+        },
+        "output": {
+          "id": "T-2"
+        }
+      },
+      "stateBefore": "6f6a76876c737a7041de71cfd4b11f8ed1560e12f0422b40a7dfeebfeb863b51",
+      "stateAfter": "3c54cc2405864526bccd2a14c7a775a8a6304b6a6f76cff597ad5cc5daf7b007",
+      "snapshots": {
+        "before": {
+          "tickets": 2
+        },
+        "after": {
+          "tickets": 3
+        }
+      },
+      "parentHash": "4d5b502c1f8b317982a126951fb83e7f6c8fb3385ae3225c0b0a9a508cd1cfba",
+      "hash": "755322e401eb142dfe45d748d7adc7c407cf741fb75ef0fdace7bf1fd5075ac1",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "ticket title missing project tag; auto-prefixed",
+        "correction": {
+          "tool": "createTicket",
+          "input": {
+            "title": "[OPS] Issue 2"
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "abdf7f32-f0a2-4b65-86e3-f29ee0fa8bdc",
+      "sequence": 3,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "createTicket",
+        "input": {
+          "title": "Issue 3"
+        },
+        "output": {
+          "id": "T-3"
+        }
+      },
+      "stateBefore": "3c54cc2405864526bccd2a14c7a775a8a6304b6a6f76cff597ad5cc5daf7b007",
+      "stateAfter": "446a3d19ff521dcfd050dfdb3514694143faf8098516e727e75348c0966a51ea",
+      "snapshots": {
+        "before": {
+          "tickets": 3
+        },
+        "after": {
+          "tickets": 4
+        }
+      },
+      "parentHash": "755322e401eb142dfe45d748d7adc7c407cf741fb75ef0fdace7bf1fd5075ac1",
+      "hash": "8750e8ba8416a4aefbd91d23158681cf81ba84a14c0c628ca30f3a737cde06ae",
+      "critic": {
+        "verdict": "CORRECTED",
+        "reason": "ticket title missing project tag; auto-prefixed",
+        "correction": {
+          "tool": "createTicket",
+          "input": {
+            "title": "[OPS] Issue 3"
+          }
+        }
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "7eddb69e-d907-42a4-8964-ebf0873f85b7",
+      "sequence": 4,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "closeAccount",
+        "input": {
+          "accountId": "A-0"
+        },
+        "output": null,
+        "reversalStrategy": "ESCALATE"
+      },
+      "stateBefore": "d91bb8fba6fc2741f1c2ee8843ab7755196dd4161b7a557fc98ac7f3196a9243",
+      "stateAfter": "d91bb8fba6fc2741f1c2ee8843ab7755196dd4161b7a557fc98ac7f3196a9243",
+      "snapshots": {
+        "before": {
+          "holds": 0
+        },
+        "after": {
+          "holds": 0
+        }
+      },
+      "parentHash": "8750e8ba8416a4aefbd91d23158681cf81ba84a14c0c628ca30f3a737cde06ae",
+      "hash": "9d87bc119d5134873a8cc3968891c10f1727a898368cdc701d4db8dc9edc0967",
+      "critic": {
+        "verdict": "FLAGGED",
+        "reason": "account has regulatory hold; closure requires approval"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "6b5bbb9b-50d2-4499-8f5c-b181d01d15de",
+      "sequence": 5,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "closeAccount",
+        "input": {
+          "accountId": "A-1"
+        },
+        "output": null,
+        "reversalStrategy": "ESCALATE"
+      },
+      "stateBefore": "3d9b9bbce500cee78aebf3a39557133ddcefb9455c4cf6d5ba6dd0f901497bd4",
+      "stateAfter": "3d9b9bbce500cee78aebf3a39557133ddcefb9455c4cf6d5ba6dd0f901497bd4",
+      "snapshots": {
+        "before": {
+          "holds": 1
+        },
+        "after": {
+          "holds": 1
+        }
+      },
+      "parentHash": "9d87bc119d5134873a8cc3968891c10f1727a898368cdc701d4db8dc9edc0967",
+      "hash": "67dc3b2e87de8317dbf6a6c7be19b9564d4d51bacc252c10e86e6d769733f4ac",
+      "critic": {
+        "verdict": "FLAGGED",
+        "reason": "account has regulatory hold; closure requires approval"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 6,
+    "committed": 6,
+    "rolledBack": 0,
+    "corrections": 4,
+    "flags": 2
+  },
+  "expectedPatterns": [
+    {
+      "tool": "closeAccount",
+      "fingerprint": "ab841c3d35b2205e418e2a97d02b71a5a2cecd35800edbcf89a71a2ddf1dc04a",
+      "count": 2
+    },
+    {
+      "tool": "createTicket",
+      "fingerprint": "fbe8c9de47177ebc329d808ba4f642f33166b44b149a045b67adfee3f8a128f7",
+      "count": 4
+    }
+  ]
+}

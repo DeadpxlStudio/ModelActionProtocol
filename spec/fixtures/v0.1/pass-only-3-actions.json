@@ -1,0 +1,106 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "39026073-a72f-4bd3-8a09-bc1f38986e77",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "increment",
+        "input": {
+          "by": 1
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "c9d8c8bbb14dfcff0a55c6d434459f7d849a55ef3b11113dd26bc544b22d18da",
+      "stateAfter": "55459e863d1c8fcdaff7ac18549f96db4495ea3a74c4d659e410cd554d65ff43",
+      "snapshots": {
+        "before": {
+          "counter": 0
+        },
+        "after": {
+          "counter": 1
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "6546bbc7b4a7397835c1ac43ebc19a138b79efef3c144bd1fed2ce7b97298dcf",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "counter increment is well-formed"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "84836b2b-59b8-4584-8b79-a42d8479d72f",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "increment",
+        "input": {
+          "by": 1
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "55459e863d1c8fcdaff7ac18549f96db4495ea3a74c4d659e410cd554d65ff43",
+      "stateAfter": "30703823b6f300ea7a1dca2339f8fb2d846d825ae0848c140dbca706c65509b7",
+      "snapshots": {
+        "before": {
+          "counter": 1
+        },
+        "after": {
+          "counter": 2
+        }
+      },
+      "parentHash": "6546bbc7b4a7397835c1ac43ebc19a138b79efef3c144bd1fed2ce7b97298dcf",
+      "hash": "e2aad6687283c0a9ee5967ee4f41ea7c2f23d2bd931ce01bfc5b8a2f4ac7c717",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "counter increment is well-formed"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "2c0268ce-38db-408e-877a-23c00a04113e",
+      "sequence": 2,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "increment",
+        "input": {
+          "by": 1
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "30703823b6f300ea7a1dca2339f8fb2d846d825ae0848c140dbca706c65509b7",
+      "stateAfter": "9b7931cfbc39c53851000b35efafb44d36df3a59c06bbecda387fd8945568960",
+      "snapshots": {
+        "before": {
+          "counter": 2
+        },
+        "after": {
+          "counter": 3
+        }
+      },
+      "parentHash": "e2aad6687283c0a9ee5967ee4f41ea7c2f23d2bd931ce01bfc5b8a2f4ac7c717",
+      "hash": "acbc53b60f8fdc1a809c900a76b7fe634afdcab3e965068afdbab033f5bdd9ac",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "counter increment is well-formed"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 3,
+    "committed": 3,
+    "rolledBack": 0,
+    "corrections": 0,
+    "flags": 0
+  }
+}

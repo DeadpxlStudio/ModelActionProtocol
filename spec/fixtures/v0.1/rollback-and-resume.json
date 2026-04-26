@@ -1,0 +1,174 @@
+{
+  "protocol": "map",
+  "version": "0.1.0",
+  "entries": [
+    {
+      "id": "6180d938-457e-4a2b-86c8-1f5a0342aa14",
+      "sequence": 0,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "addItem",
+        "input": {
+          "id": 1
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "eef46741adfc3a9f76294d3b78f37a45f113092ac9d44ee77c7a038a88ff09a1",
+      "stateAfter": "a30a9d83355d7257e16cfbf9455601e7df5108455bd5290941845bf90dd92d1c",
+      "snapshots": {
+        "before": {
+          "items": []
+        },
+        "after": {
+          "items": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      },
+      "parentHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "bce6ac0a66a05fbe7f8ea4852b2c038beea60e5d1b9d571464fee9998ed59a1f",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "ok"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "6eb9fdc2-20c3-4140-84f8-3556af799aa9",
+      "sequence": 1,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "addItem",
+        "input": {
+          "id": 2
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "a30a9d83355d7257e16cfbf9455601e7df5108455bd5290941845bf90dd92d1c",
+      "stateAfter": "0e0bc9cb6b5f1b41ed89071cc8222f2bbc6b2c97af66c03cd0d24ac5102d86af",
+      "snapshots": {
+        "before": {
+          "items": [
+            {
+              "id": 1
+            }
+          ]
+        },
+        "after": {
+          "items": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ]
+        }
+      },
+      "parentHash": "bce6ac0a66a05fbe7f8ea4852b2c038beea60e5d1b9d571464fee9998ed59a1f",
+      "hash": "9f94ad4bef0b7d959f25e861896a89e0846c65eae380aa2aebb3700067b06838",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "ok"
+      },
+      "status": "ROLLED_BACK"
+    },
+    {
+      "id": "0c78bd16-474f-4d30-8efa-a98073f0626f",
+      "sequence": 2,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "ROLLBACK",
+        "input": {
+          "targetId": "6180d938-457e-4a2b-86c8-1f5a0342aa14"
+        },
+        "output": {
+          "entriesReverted": 1
+        }
+      },
+      "stateBefore": "0e0bc9cb6b5f1b41ed89071cc8222f2bbc6b2c97af66c03cd0d24ac5102d86af",
+      "stateAfter": "a30a9d83355d7257e16cfbf9455601e7df5108455bd5290941845bf90dd92d1c",
+      "snapshots": {
+        "before": {
+          "items": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ]
+        },
+        "after": {
+          "items": [
+            {
+              "id": 1
+            }
+          ]
+        }
+      },
+      "parentHash": "9f94ad4bef0b7d959f25e861896a89e0846c65eae380aa2aebb3700067b06838",
+      "hash": "c5b8e81487b04353fcc2bfeff4c6839cedf8a536736d2c925e27f3db7303702b",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "rollback restoring state to entry 0"
+      },
+      "status": "ACTIVE"
+    },
+    {
+      "id": "313d0bef-b730-45db-8f04-a16f68a9a65b",
+      "sequence": 3,
+      "timestamp": "2026-04-25T00:00:00.000Z",
+      "action": {
+        "tool": "addItem",
+        "input": {
+          "id": 3
+        },
+        "output": {
+          "ok": true
+        }
+      },
+      "stateBefore": "a30a9d83355d7257e16cfbf9455601e7df5108455bd5290941845bf90dd92d1c",
+      "stateAfter": "a0bad26bd0d67ac20a9d78605cac011375a39817a1cfa3fd95027faf1ed36b99",
+      "snapshots": {
+        "before": {
+          "items": [
+            {
+              "id": 1
+            }
+          ]
+        },
+        "after": {
+          "items": [
+            {
+              "id": 1
+            },
+            {
+              "id": 3
+            }
+          ]
+        }
+      },
+      "parentHash": "c5b8e81487b04353fcc2bfeff4c6839cedf8a536736d2c925e27f3db7303702b",
+      "hash": "53047bc9fec5e411e646ac5fe3ccb22f4659b1187e4a001733e5e434189210b0",
+      "critic": {
+        "verdict": "PASS",
+        "reason": "ok"
+      },
+      "status": "ACTIVE"
+    }
+  ],
+  "stats": {
+    "total": 4,
+    "committed": 2,
+    "rolledBack": 1,
+    "corrections": 0,
+    "flags": 0
+  }
+}
