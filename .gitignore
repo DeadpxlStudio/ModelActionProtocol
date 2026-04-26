@@ -15,3 +15,6 @@ next-env.d.ts
 *.db-shm
 *.db-wal
 .vercel
+
+# Local launch / ops drafts (not for the public repo)
+.launch/

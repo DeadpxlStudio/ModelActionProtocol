@@ -39,16 +39,23 @@ export function Verifier({ initial }: { initial?: InitialPayload }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hash = window.location.hash.replace(/^#/, "");
-    if (!hash) return;
-    (async () => {
-      const decoded = await decodeLedgerFromFragmentClient(hash);
-      if (decoded) {
-        handleVerify(decoded, { source: "shared link" });
-      } else {
-        setBootstrapError("This shared link is invalid or corrupted.");
-      }
-    })();
-  }, [handleVerify]);
+    if (hash) {
+      (async () => {
+        const decoded = await decodeLedgerFromFragmentClient(hash);
+        if (decoded) {
+          handleVerify(decoded, { source: "shared link" });
+        } else {
+          setBootstrapError("This shared link is invalid or corrupted.");
+        }
+      })();
+      return;
+    }
+    if (initial?.text) {
+      handleVerify(initial.text, { source: initial.source });
+    }
+    // intentional: bootstrap once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!response?.ok) {
